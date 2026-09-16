@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PlaceAI | Feedback</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f9fc;
+            color: #172033;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 6%;
+        }
+
+
+        .logo {
+            color: #2563eb;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        .back {
+            text-decoration: none;
+            color: #374151;
+            font-size: 15px;
+        }
+
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 950px;
+            margin: 40px auto 60px;
+        }
+
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+
+        /* ================= BOX ================= */
+
+        .feedback-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+
+        .feedback-box h2 {
+            font-size: 21px;
+            margin-bottom: 14px;
+        }
+
+
+        .feedback-box p {
+            color: #4b5563;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+
+        .error {
+            color: #dc2626;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 650px) {
+
+            .container {
+                width: 92%;
+            }
+
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        PlaceAI
+    </div>
+
+
+    <a
+        href="/dashboard.html"
+        class="back"
+    >
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+
+    <h1>
+        Performance Feedback
+    </h1>
+
+
+    <p class="subtitle">
+        Review your performance and understand what you should improve.
+    </p>
+
+
+    <!-- ================= LOADING ================= -->
+
+    <div
+        id="loadingBox"
+        class="loading"
+    >
+        Preparing your feedback...
+    </div>
+
+
+    <!-- ================= FEEDBACK ================= -->
+
+    <div
+        id="feedbackContent"
+        style="display:none;"
+    >
+
+
+        <!-- ================= OVERALL ================= -->
+
+        <div class="feedback-box">
+
+            <h2>
+                Overall Feedback
+            </h2>
+
+            <p id="overallFeedback"></p>
+
+        </div>
+
+
+        <!-- ================= APTITUDE ================= -->
+
+        <div class="feedback-box">
+
+            <h2>
+                Aptitude Feedback
+            </h2>
+
+            <p id="aptitudeFeedback"></p>
+
+        </div>
+
+
+        <!-- ================= CODING ================= -->
+
+        <div class="feedback-box">
+
+            <h2>
+                Coding Feedback
+            </h2>
+
+            <p id="codingFeedback"></p>
+
+        </div>
+
+
+        <!-- ================= AI INTERVIEW ================= -->
+
+        <div class="feedback-box">
+
+            <h2>
+                AI Interview Feedback
+            </h2>
+
+            <p id="aiFeedback"></p>
+
+        </div>
+
+
+        <!-- ================= IMPROVEMENT ================= -->
+
+        <div class="feedback-box">
+
+            <h2>
+                What You Should Improve
+            </h2>
+
+            <p id="improvementFeedback"></p>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<script>
+
+
+    // ==========================================
+    // GET LOGGED-IN USER
+    // ==========================================
+
+    const isLoggedIn =
+        localStorage.getItem(
+            "isLoggedIn"
+        );
+
+
+    const storedUser =
+        localStorage.getItem(
+            "placeaiUser"
+        );
+
+
+    if (
+        isLoggedIn !== "true" ||
+        !storedUser
+    ) {
+
+        window.location.href =
+            "/login.html";
+
+    }
+
+
+    let user;
+
+
+    try {
+
+        user =
+            JSON.parse(
+                storedUser
+            );
+
+    }
+    catch (error) {
+
+        localStorage.clear();
+
+        window.location.href =
+            "/login.html";
+
+    }
+
+
+    // ==========================================
+    // START
+    // ==========================================
+
+    loadFeedback();
+
+
+    // ==========================================
+    // MAIN FUNCTION
+    // ==========================================
+
+    async function loadFeedback() {
+
+        let progress =
+            null;
+
+
+        let aiAttempts =
+            [];
+
+
+        // ======================================
+        // PROGRESS API
+        // ======================================
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/progress?email=" +
+                    encodeURIComponent(
+                        user.email
+                    )
+                );
+
+
+            if (response.ok) {
+
+                progress =
+                    await response.json();
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "Progress API Error:",
+                error
+            );
+
+        }
+
+
+        // ======================================
+        // AI INTERVIEW API
+        // ======================================
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/ai-interviews/attempts?email=" +
+                    encodeURIComponent(
+                        user.email
+                    )
+                );
+
+
+            if (response.ok) {
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    Array.isArray(data)
+                ) {
+
+                    aiAttempts =
+                        data;
+
+                }
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "AI Interview API Error:",
+                error
+            );
+
+        }
+
+
+        // ======================================
+        // SHOW FEEDBACK
+        // ======================================
+
+        if (!progress) {
+
+            document.getElementById(
+                "loadingBox"
+            ).innerHTML =
+
+                "<span class='error'>" +
+                "Unable to load your performance data." +
+                "</span>";
+
+            return;
+
+        }
+
+
+        createFeedback(
+            progress,
+            aiAttempts
+        );
+
+
+        document.getElementById(
+            "loadingBox"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "feedbackContent"
+        ).style.display =
+            "block";
+
+    }
+
+
+    // ==========================================
+    // CREATE FEEDBACK
+    // ==========================================
+
+    function createFeedback(
+        progress,
+        aiAttempts
+    ) {
+
+
+        // ======================================
+        // VALUES FROM API
+        // ======================================
+
+        const aptitudeTotal =
+            Number(
+                progress.aptitudeTotal || 0
+            );
+
+
+        const aptitudeCorrect =
+            Number(
+                progress.aptitudeCorrect || 0
+            );
+
+
+        const aptitudeWrong =
+            Number(
+                progress.aptitudeWrong || 0
+            );
+
+
+        const codingTotal =
+            Number(
+                progress.codingTotal || 0
+            );
+
+
+        const codingPassed =
+            Number(
+                progress.codingPassed || 0
+            );
+
+
+        const codingFailed =
+            Number(
+                progress.codingFailed || 0
+            );
+
+
+        // ======================================
+        // ACCURACY
+        // ======================================
+
+        const aptitudeAccuracy =
+            aptitudeTotal > 0
+                ? (
+                    aptitudeCorrect /
+                    aptitudeTotal
+                ) * 100
+                : 0;
+
+
+        const codingAccuracy =
+            codingTotal > 0
+                ? (
+                    codingPassed /
+                    codingTotal
+                ) * 100
+                : 0;
+
+
+        // ======================================
+        // APTITUDE
+        // ======================================
+
+        let aptitudeSentence;
+
+
+        if (
+            aptitudeTotal === 0
+        ) {
+
+            aptitudeSentence =
+                "You have not attempted any aptitude questions yet. Start practicing different aptitude topics to build your preparation.";
+
+        }
+        else if (
+            aptitudeAccuracy >= 80
+        ) {
+
+            aptitudeSentence =
+                "You are good in aptitude. Your performance is strong, so you should now focus on medium and hard-level questions.";
+
+        }
+        else if (
+            aptitudeAccuracy >= 60
+        ) {
+
+            aptitudeSentence =
+                "Your aptitude preparation is developing well. You should practice more questions and focus on the concepts where you make mistakes.";
+
+        }
+        else {
+
+            aptitudeSentence =
+                "You need more practice in aptitude. Focus on understanding the concepts first and then improve your speed and accuracy.";
+
+        }
+
+
+        document.getElementById(
+            "aptitudeFeedback"
+        ).innerText =
+            aptitudeSentence;
+
+
+        // ======================================
+        // CODING
+        // ======================================
+
+        let codingSentence;
+
+
+        if (
+            codingTotal === 0
+        ) {
+
+            codingSentence =
+                "You have not attempted any coding problems yet. Start solving coding problems regularly to improve your problem-solving and implementation skills.";
+
+        }
+        else if (
+            codingAccuracy >= 80
+        ) {
+
+            codingSentence =
+                "You are good at coding and problem solving. Continue practicing different problem types and focus on writing efficient solutions.";
+
+        }
+        else if (
+            codingAccuracy >= 60
+        ) {
+
+            codingSentence =
+                "You have a good coding foundation, but you should practice more implementation problems and improve your consistency.";
+
+        }
+        else {
+
+            codingSentence =
+                "You need more coding practice. Focus on understanding the approach before writing the code and practice complete solutions.";
+
+        }
+
+
+        document.getElementById(
+            "codingFeedback"
+        ).innerText =
+            codingSentence;
+
+
+        // ======================================
+        // AI INTERVIEW
+        // ======================================
+
+        createAiFeedback(
+            aiAttempts
+        );
+
+
+        // ======================================
+        // IMPROVEMENT
+        // ======================================
+
+        const improvements = [];
+
+
+        if (
+            aptitudeTotal > 0 &&
+            aptitudeAccuracy < 70
+        ) {
+
+            improvements.push(
+                "aptitude concepts and accuracy"
+            );
+
+        }
+
+
+        if (
+            codingTotal > 0 &&
+            codingAccuracy < 70
+        ) {
+
+            improvements.push(
+                "coding problem solving and implementation"
+            );
+
+        }
+
+
+        // AI improvement
+
+        if (
+            aiAttempts &&
+            aiAttempts.length > 0
+        ) {
+
+            const scored =
+                aiAttempts.filter(
+                    function(item) {
+
+                        return (
+                            item.score !== null &&
+                            item.score !== undefined
+                        );
+
+                    }
+                );
+
+
+            if (
+                scored.length > 0
+            ) {
+
+                let totalScore =
+                    0;
+
+
+                scored.forEach(
+                    function(item) {
+
+                        totalScore +=
+                            Number(
+                                item.score || 0
+                            );
+
+                    }
+                );
+
+
+                const average =
+                    totalScore /
+                    scored.length;
+
+
+                if (
+                    average < 7
+                ) {
+
+                    improvements.push(
+                        "technical interview answers and confidence"
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        // ======================================
+        // IMPROVEMENT SENTENCE
+        // ======================================
+
+        let improvementSentence;
+
+
+        if (
+            improvements.length === 0
+        ) {
+
+            improvementSentence =
+                "You do not have any major weak area at the moment. Keep practicing consistently and maintain your current preparation.";
+
+        }
+        else {
+
+            improvementSentence =
+                "You should focus more on " +
+                joinNaturally(
+                    improvements
+                ) +
+                ".";
+
+        }
+
+
+        document.getElementById(
+            "improvementFeedback"
+        ).innerText =
+            improvementSentence;
+
+
+        // ======================================
+        // OVERALL
+        // ======================================
+
+        createOverallFeedback(
+            aptitudeTotal,
+            codingTotal,
+            aptitudeAccuracy,
+            codingAccuracy,
+            aiAttempts
+        );
+
+    }
+
+
+    // ==========================================
+    // AI FEEDBACK
+    // ==========================================
+
+    function createAiFeedback(
+        attempts
+    ) {
+
+        const element =
+            document.getElementById(
+                "aiFeedback"
+            );
+
+
+        if (
+            !attempts ||
+            attempts.length === 0
+        ) {
+
+            element.innerText =
+                "You have not completed an AI interview yet. Complete an AI interview to receive personalized feedback.";
+
+            return;
+
+        }
+
+
+        const scored =
+            attempts.filter(
+                function(item) {
+
+                    return (
+                        item.score !== null &&
+                        item.score !== undefined
+                    );
+
+                }
+            );
+
+
+        if (
+            scored.length === 0
+        ) {
+
+            element.innerText =
+                "Your AI interview attempt has been recorded, but evaluated feedback is not available yet.";
+
+            return;
+
+        }
+
+
+        let totalScore =
+            0;
+
+
+        scored.forEach(
+            function(item) {
+
+                totalScore +=
+                    Number(
+                        item.score || 0
+                    );
+
+            }
+        );
+
+
+        const average =
+            totalScore /
+            scored.length;
+
+
+        if (
+            average >= 8
+        ) {
+
+            element.innerText =
+                "You are performing strongly in AI interviews. Your technical understanding is good; continue improving the structure and depth of your answers.";
+
+        }
+        else if (
+            average >= 6
+        ) {
+
+            element.innerText =
+                "You have a good technical foundation for interviews. Try to make your answers more structured, detailed and confident.";
+
+        }
+        else {
+
+            element.innerText =
+                "You need more technical interview practice. Focus on understanding concepts clearly and explaining your approach step by step.";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // OVERALL
+    // ==========================================
+
+    function createOverallFeedback(
+        aptitudeTotal,
+        codingTotal,
+        aptitudeAccuracy,
+        codingAccuracy,
+        aiAttempts
+    ) {
+
+        const element =
+            document.getElementById(
+                "overallFeedback"
+            );
+
+
+        const sentences = [];
+
+
+        if (
+            aptitudeTotal > 0
+        ) {
+
+            if (
+                aptitudeAccuracy >= 80
+            ) {
+
+                sentences.push(
+                    "You are performing well in aptitude."
+                );
+
+            }
+            else if (
+                aptitudeAccuracy >= 60
+            ) {
+
+                sentences.push(
+                    "Your aptitude preparation is good, but you can improve your accuracy."
+                );
+
+            }
+            else {
+
+                sentences.push(
+                    "You need more practice in aptitude and should focus on improving your accuracy."
+                );
+
+            }
+
+        }
+
+
+        if (
+            codingTotal > 0
+        ) {
+
+            if (
+                codingAccuracy >= 80
+            ) {
+
+                sentences.push(
+                    "You are strong in coding and problem solving."
+                );
+
+            }
+            else if (
+                codingAccuracy >= 60
+            ) {
+
+                sentences.push(
+                    "You have a good coding foundation, but you should practice more implementation problems."
+                );
+
+            }
+            else {
+
+                sentences.push(
+                    "You should spend more time practicing coding and problem solving."
+                );
+
+            }
+
+        }
+
+
+        if (
+            aiAttempts &&
+            aiAttempts.length > 0
+        ) {
+
+            const scored =
+                aiAttempts.filter(
+                    function(item) {
+
+                        return (
+                            item.score !== null &&
+                            item.score !== undefined
+                        );
+
+                    }
+                );
+
+
+            if (
+                scored.length > 0
+            ) {
+
+                let totalScore =
+                    0;
+
+
+                scored.forEach(
+                    function(item) {
+
+                        totalScore +=
+                            Number(
+                                item.score || 0
+                            );
+
+                    }
+                );
+
+
+                const average =
+                    totalScore /
+                    scored.length;
+
+
+                if (
+                    average >= 8
+                ) {
+
+                    sentences.push(
+                        "Your AI interview performance is strong. Keep working on confidence and deeper technical explanations."
+                    );
+
+                }
+                else if (
+                    average >= 6
+                ) {
+
+                    sentences.push(
+                        "Your AI interview performance is developing well. Focus on structured and confident answers."
+                    );
+
+                }
+                else {
+
+                    sentences.push(
+                        "Your AI interview performance needs improvement. Focus on understanding concepts and explaining your approach clearly."
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        if (
+            sentences.length === 0
+        ) {
+
+            element.innerText =
+                "Start solving aptitude and coding questions and complete an AI interview to receive personalized feedback.";
+
+            return;
+
+        }
+
+
+        element.innerText =
+            sentences.join(" ");
+
+    }
+
+
+    // ==========================================
+    // NATURAL JOIN
+    // ==========================================
+
+    function joinNaturally(
+        values
+    ) {
+
+        if (
+            values.length === 1
+        ) {
+
+            return values[0];
+
+        }
+
+
+        if (
+            values.length === 2
+        ) {
+
+            return (
+                values[0] +
+                " and " +
+                values[1]
+            );
+
+        }
+
+
+        return (
+            values
+                .slice(0, -1)
+                .join(", ") +
+            " and " +
+            values[
+                values.length - 1
+            ]
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

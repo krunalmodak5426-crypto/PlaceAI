@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PlaceAI - AI Mock Interview</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 19px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        #customTopicGroup {
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #startBtn {
+            background: #2563eb;
+            color: white;
+        }
+
+        #endBtn {
+            display: none;
+            background: #dc2626;
+            color: white;
+        }
+
+        #status {
+            text-align: center;
+            margin: 22px 0;
+            font-weight: bold;
+            min-height: 25px;
+        }
+
+        .section {
+            margin-top: 25px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        #conversation {
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .message {
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .ai {
+            background: #e8f0ff;
+        }
+
+        .user {
+            background: #e9f9ee;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .score {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        .voice-note {
+            margin-top: 12px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .result-actions {
+            margin-top: 25px;
+        }
+
+        .secondary-btn {
+            background: #eef2ff;
+            color: #1e3a8a;
+        }
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 22px;
+            }
+
+            .container {
+                width: 94%;
+                margin: 20px auto;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>PlaceAI</h1>
+
+        <div class="subtitle">
+            AI Technical Mock Interview
+        </div>
+
+
+        <!-- ================= SETTINGS ================= -->
+
+        <label for="language">
+            Programming Language
+        </label>
+
+        <select id="language">
+
+            <option value="Java">
+                Java
+            </option>
+
+            <option value="Python">
+                Python
+            </option>
+
+            <option value="C++">
+                C++
+            </option>
+
+            <option value="C">
+                C
+            </option>
+
+        </select>
+
+
+        <label for="difficulty">
+            Difficulty
+        </label>
+
+        <select id="difficulty">
+
+            <option value="Easy">
+                Easy
+            </option>
+
+            <option value="Medium" selected>
+                Medium
+            </option>
+
+            <option value="Hard">
+                Hard
+            </option>
+
+        </select>
+
+
+        <label for="topic">
+            Topic
+        </label>
+
+        <select id="topic">
+
+            <option value="__none__">
+                Choose your topic
+            </option>
+
+            <option value="Custom Topic">
+                Custom Topic
+            </option>
+
+            <option value="Arrays">
+                Arrays
+            </option>
+
+            <option value="Strings">
+                Strings
+            </option>
+
+            <option value="Data Structures">
+                Data Structures
+            </option>
+
+            <option value="Linked List">
+                Linked List
+            </option>
+
+            <option value="Stack & Queue">
+                Stack & Queue
+            </option>
+
+            <option value="Trees & Graphs">
+                Trees & Graphs
+            </option>
+
+            <option value="DBMS">
+                DBMS
+            </option>
+
+            <option value="SQL">
+                SQL
+            </option>
+
+            <option value="Operating Systems">
+                Operating Systems
+            </option>
+
+            <option value="Problem Solving & Algorithms">
+                Problem Solving & Algorithms
+            </option>
+
+        </select>
+
+
+        <!-- ================= CUSTOM TOPIC ================= -->
+
+        <div id="customTopicGroup">
+
+            <label for="customTopic">
+                Custom Topic
+            </label>
+
+            <input
+                id="customTopic"
+                type="text"
+                placeholder="Enter your interview topic"
+            >
+
+        </div>
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <button id="startBtn">
+            🎤 Start AI Interview
+        </button>
+
+        <button id="endBtn">
+            🛑 End Interview
+        </button>
+
+
+        <div id="status">
+            Ready to start
+        </div>
+
+
+        <div class="voice-note">
+            The interview will start listening automatically after each question.
+        </div>
+
+
+        <!-- ================= LIVE CONVERSATION ================= -->
+
+        <div class="section">
+
+            <h2>
+                Interview Conversation
+            </h2>
+
+            <div id="conversation">
+                Start the interview to see the conversation here.
+            </div>
+
+        </div>
+
+
+        <!-- ================= FINAL RESULT ================= -->
+
+        <div
+            class="section result"
+            id="resultSection"
+        >
+
+            <h2>
+                📊 Interview Result
+            </h2>
+
+
+            <div
+                class="score"
+                id="score"
+            >
+                Score: --
+            </div>
+
+
+            <p>
+                <b>Language:</b>
+                <span id="resultLanguage"></span>
+            </p>
+
+
+            <p>
+                <b>Difficulty:</b>
+                <span id="resultDifficulty"></span>
+            </p>
+
+
+            <p>
+                <b>Topic:</b>
+                <span id="resultTopic"></span>
+            </p>
+
+
+            <h3>
+                Performance
+            </h3>
+
+            <p id="performance"></p>
+
+
+            <h3>
+                Strengths
+            </h3>
+
+            <ul id="strengths"></ul>
+
+
+            <h3>
+                Areas to Improve
+            </h3>
+
+            <ul id="improvements"></ul>
+
+
+            <h3>
+                Overall Feedback
+            </h3>
+
+            <p id="feedback"></p>
+
+
+            <div class="result-actions">
+
+                <button
+                    class="secondary-btn"
+                    onclick="location.reload()"
+                >
+                    🔄 Start New Interview
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       LOGIN CHECK
+       ===================================================== */
+
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn");
+
+
+    if (isLoggedIn !== "true") {
+
+        window.location.href =
+            "/login.html";
+
+    }
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+    const startBtn =
+        document.getElementById("startBtn");
+
+    const endBtn =
+        document.getElementById("endBtn");
+
+    const status =
+        document.getElementById("status");
+
+    const conversation =
+        document.getElementById("conversation");
+
+    const resultSection =
+        document.getElementById("resultSection");
+
+    const topicSelect =
+        document.getElementById("topic");
+
+    const customTopicGroup =
+        document.getElementById("customTopicGroup");
+
+    const customTopicInput =
+        document.getElementById("customTopic");
+
+
+    /* =====================================================
+       DATA
+       ===================================================== */
+
+    let language = "";
+
+    let difficulty = "";
+
+    let topic = "";
+
+    let interviewId = "";
+
+    let currentQuestion = "";
+
+    let questionNumber = 0;
+
+    let totalScore = 0;
+
+    let totalQuestions = 0;
+
+    let answeredQuestions = [];
+
+    let interviewRunning = false;
+
+    let waitingForAnswer = false;
+
+    let recognition = null;
+
+    let recognitionStarting = false;
+
+
+    /* =====================================================
+       TOPIC CHANGE
+       ===================================================== */
+
+    topicSelect.addEventListener(
+        "change",
+        function () {
+
+            if (
+                topicSelect.value ===
+                "Custom Topic"
+            ) {
+
+                customTopicGroup.style.display =
+                    "block";
+
+                customTopicInput.focus();
+
+            }
+            else {
+
+                customTopicGroup.style.display =
+                    "none";
+
+                customTopicInput.value =
+                    "";
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       SPEECH SYNTHESIS
+       ===================================================== */
+
+    function speak(text) {
+
+        return new Promise(
+            function(resolve) {
+
+                if (
+                    !("speechSynthesis" in window)
+                ) {
+
+                    resolve();
+
+                    return;
+                }
+
+
+                window.speechSynthesis.cancel();
+
+
+                const utterance =
+                    new SpeechSynthesisUtterance(
+                        text
+                    );
+
+
+                utterance.lang =
+                    "en-IN";
+
+                utterance.rate =
+                    0.95;
+
+                utterance.pitch =
+                    1;
+
+
+                utterance.onend =
+                    function () {
+
+                        resolve();
+
+                    };
+
+
+                utterance.onerror =
+                    function () {
+
+                        resolve();
+
+                    };
+
+
+                window.speechSynthesis.speak(
+                    utterance
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SMALL DELAY
+       ===================================================== */
+
+    function wait(ms) {
+
+        return new Promise(
+            function(resolve) {
+
+                setTimeout(
+                    resolve,
+                    ms
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SPEECH RECOGNITION SETUP
+       ===================================================== */
+
+    function setupRecognition() {
+
+        const SpeechRecognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+
+        if (!SpeechRecognition) {
+
+            return false;
+
+        }
+
+
+        recognition =
+            new SpeechRecognition();
+
+
+        recognition.lang =
+            "en-IN";
+
+        /*
+         * Browser automatically gives a final
+         * speech result when it considers the
+         * utterance complete.
+         *
+         * No manual silence timer.
+         */
+        recognition.continuous =
+            false;
+
+        recognition.interimResults =
+            false;
+
+        recognition.maxAlternatives =
+            1;
+
+
+        recognition.onstart =
+            function () {
+
+                recognitionStarting =
+                    false;
+
+                waitingForAnswer =
+                    true;
+
+
+                status.innerText =
+                    "🎤 Your turn — speak your answer";
+
+
+            };
+
+
+        recognition.onresult =
+            function (event) {
+
+                const text =
+                    event.results[0][0].transcript
+                        .trim();
+
+
+                if (!text) {
+
+                    waitingForAnswer =
+                        false;
+
+                    status.innerText =
+                        "No answer detected. Continuing...";
+
+                    return;
+
+                }
+
+
+                waitingForAnswer =
+                    false;
+
+
+                /*
+                 * ONLY actual speech result
+                 * starts answer evaluation.
+                 */
+                handleAnswer(
+                    text
+                );
+
+            };
+
+
+        recognition.onerror =
+            function (event) {
+
+                recognitionStarting =
+                    false;
+
+                waitingForAnswer =
+                    false;
+
+
+                if (!interviewRunning) {
+
+                    return;
+
+                }
+
+
+                if (
+                    event.error ===
+                    "not-allowed"
+                ) {
+
+                    status.innerText =
+                        "❌ Microphone permission was denied.";
+
+                    return;
+
+                }
+
+
+                if (
+                    event.error ===
+                    "no-speech"
+                ) {
+
+                    status.innerText =
+                        "🎤 No answer detected. Please speak.";
+
+                    /*
+                     * Give the user another chance
+                     * without ending the interview.
+                     */
+                    setTimeout(
+                        function () {
+
+                            if (
+                                interviewRunning &&
+                                currentQuestion
+                            ) {
+
+                                startListening();
+
+                            }
+
+                        },
+                        800
+                    );
+
+                    return;
+
+                }
+
+
+                status.innerText =
+                    "❌ Voice recognition error. Trying again...";
+
+
+                setTimeout(
+                    function () {
+
+                        if (
+                            interviewRunning &&
+                            currentQuestion
+                        ) {
+
+                            startListening();
+
+                        }
+
+                    },
+                    1000
+                );
+
+            };
+
+
+        recognition.onend =
+            function () {
+
+                recognitionStarting =
+                    false;
+
+                waitingForAnswer =
+                    false;
+
+            };
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       START LISTENING
+       ===================================================== */
+
+    function startListening() {
+
+        if (
+            !interviewRunning ||
+            !currentQuestion ||
+            waitingForAnswer ||
+            recognitionStarting
+        ) {
+
+            return;
+
+        }
+
+
+        if (!recognition) {
+
+            const ready =
+                setupRecognition();
+
+
+            if (!ready) {
+
+                status.innerText =
+                    "⚠️ Voice recognition is not supported in this browser. Use Chrome or Edge.";
+
+                return;
+
+            }
+
+        }
+
+
+        try {
+
+            recognitionStarting =
+                true;
+
+
+            recognition.start();
+
+        }
+        catch (error) {
+
+            recognitionStarting =
+                false;
+
+            console.log(
+                "Recognition start:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       STOP RECOGNITION
+       ===================================================== */
+
+    function stopRecognition() {
+
+        recognitionStarting =
+            false;
+
+
+        waitingForAnswer =
+            false;
+
+
+        if (recognition) {
+
+            try {
+
+                recognition.stop();
+
+            }
+            catch (error) {
+
+                console.log(
+                    "Recognition stop:",
+                    error
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ADD MESSAGE
+       ===================================================== */
+
+    function addMessage(
+        role,
+        text
+    ) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.className =
+            "message " +
+            (
+                role === "assistant"
+                    ? "ai"
+                    : "user"
+            );
+
+
+        div.innerHTML =
+            role === "assistant"
+
+                ? "<b>🤖 AI:</b> " +
+                  escapeHTML(text)
+
+                : "<b>👤 You:</b> " +
+                  escapeHTML(text);
+
+
+        conversation.appendChild(
+            div
+        );
+
+
+        conversation.scrollTop =
+            conversation.scrollHeight;
+
+    }
+
+
+    /* =====================================================
+       START INTERVIEW
+       ===================================================== */
+
+    startBtn.addEventListener(
+        "click",
+        async function () {
+
+            language =
+                document.getElementById(
+                    "language"
+                ).value;
+
+
+            difficulty =
+                document.getElementById(
+                    "difficulty"
+                ).value;
+
+
+            const selectedTopic =
+                topicSelect.value;
+
+
+            if (
+                selectedTopic ===
+                "__none__"
+            ) {
+
+                alert(
+                    "Please choose a topic."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                selectedTopic ===
+                "Custom Topic"
+            ) {
+
+                topic =
+                    customTopicInput.value.trim();
+
+
+                if (!topic) {
+
+                    alert(
+                        "Please enter your custom topic."
+                    );
+
+                    customTopicInput.focus();
+
+                    return;
+
+                }
+
+            }
+            else {
+
+                topic =
+                    selectedTopic;
+
+            }
+
+
+            interviewId =
+                "AI-" +
+                Date.now() +
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 8);
+
+
+            currentQuestion =
+                "";
+
+            questionNumber =
+                0;
+
+            totalScore =
+                0;
+
+            totalQuestions =
+                0;
+
+            answeredQuestions =
+                [];
+
+            interviewRunning =
+                true;
+
+            waitingForAnswer =
+                false;
+
+
+            conversation.innerHTML =
+                "";
+
+
+            resultSection.style.display =
+                "none";
+
+
+            startBtn.style.display =
+                "none";
+
+
+            startBtn.disabled =
+                true;
+
+
+            endBtn.style.display =
+                "block";
+
+
+            status.innerText =
+                "Connecting to AI interviewer...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/free-ai-interview/start",
+                        {
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                ...getAuthHeader()
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    language:
+                                        language,
+
+                                    difficulty:
+                                        difficulty,
+
+                                    topic:
+                                        topic,
+
+                                    interviewId:
+                                        interviewId
+
+                                })
+
+                        }
+                    );
+
+
+                const data =
+                    await readJson(
+                        response
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        "Unable to start interview."
+                    );
+
+                }
+
+
+                /* =========================================
+                   WELCOME
+                   ========================================= */
+
+                const welcomeMessage =
+                    "Hello, welcome to PlaceAI! " +
+                    "Today we will have a " +
+                    difficulty +
+                    " level " +
+                    language +
+                    " technical interview on " +
+                    topic +
+                    ". Let's begin.";
+
+
+                addMessage(
+                    "assistant",
+                    welcomeMessage
+                );
+
+
+                status.innerText =
+                    "🤖 AI is speaking...";
+
+
+                await speak(
+                    welcomeMessage
+                );
+
+
+                /* =========================================
+                   FIRST QUESTION
+                   ========================================= */
+
+                currentQuestion =
+                    data.question;
+
+
+                questionNumber =
+                    1;
+
+
+                totalQuestions =
+                    5;
+
+
+                addMessage(
+                    "assistant",
+                    currentQuestion
+                );
+
+
+                status.innerText =
+                    "🤖 AI is speaking...";
+
+
+                await speak(
+                    currentQuestion
+                );
+
+
+                /*
+                 * AUTOMATICALLY START LISTENING
+                 * AFTER THE QUESTION.
+                 */
+
+                status.innerText =
+                    "🎤 Your turn — speak your answer";
+
+
+                await wait(300);
+
+
+                startListening();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "START ERROR:",
+                    error
+                );
+
+
+                status.innerText =
+                    "❌ " +
+                    error.message;
+
+
+                startBtn.style.display =
+                    "block";
+
+
+                startBtn.disabled =
+                    false;
+
+
+                endBtn.style.display =
+                    "none";
+
+
+                interviewRunning =
+                    false;
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       SAVE ATTEMPT TO DATABASE
+       ===================================================== */
+
+    async function saveAttemptToDatabase(
+        question,
+        userAnswer,
+        score,
+        feedback
+    ) {
+
+        try {
+
+            const storedUser =
+                localStorage.getItem(
+                    "placeaiUser"
+                );
+
+
+            if (!storedUser) {
+
+                console.warn(
+                    "placeaiUser not found. Attempt not saved."
+                );
+
+                return;
+
+            }
+
+
+            let user;
+
+
+            try {
+
+                user =
+                    JSON.parse(
+                        storedUser
+                    );
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Invalid placeaiUser data:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            const email =
+                user.email;
+
+
+            if (!email) {
+
+                console.warn(
+                    "User email not found. Attempt not saved."
+                );
+
+                return;
+
+            }
+
+
+            const result =
+                Number(score) >= 5
+                    ? "PASSED"
+                    : "FAILED";
+
+
+            const response =
+                await fetch(
+                    "/api/ai-interviews/attempts",
+                    {
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json",
+
+                            ...getAuthHeader()
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                email:
+                                    email,
+
+                                interviewId:
+                                    interviewId,
+
+                                language:
+                                    language,
+
+                                difficulty:
+                                    difficulty,
+
+                                topic:
+                                    topic,
+
+                                questionNumber:
+                                    questionNumber,
+
+                                question:
+                                    question,
+
+                                userAnswer:
+                                    userAnswer,
+
+                                result:
+                                    result,
+
+                                score:
+                                    Number(score),
+
+                                feedback:
+                                    feedback || ""
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await readJson(
+                    response
+                );
+
+
+            if (!response.ok) {
+
+                console.error(
+                    "DB SAVE FAILED:",
+                    data
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "✅ AI interview attempt saved:",
+                data
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "❌ Error saving AI interview attempt:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       HANDLE ANSWER
+       ===================================================== */
+
+    async function handleAnswer(
+        answer
+    ) {
+
+        if (
+            !interviewRunning ||
+            !currentQuestion
+        ) {
+
+            return;
+
+        }
+
+
+        const questionBeingAnswered =
+            currentQuestion;
+
+
+        const currentQuestionNumber =
+            questionNumber;
+
+
+        /*
+         * Stop the current recognition.
+         */
+        stopRecognition();
+
+
+        addMessage(
+            "user",
+            answer
+        );
+
+
+        endBtn.disabled =
+            true;
+
+
+        status.innerText =
+            "🧠 AI is evaluating your answer...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/free-ai-interview/answer",
+                    {
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json",
+
+                            ...getAuthHeader()
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                interviewId:
+                                    interviewId,
+
+                                language:
+                                    language,
+
+                                difficulty:
+                                    difficulty,
+
+                                topic:
+                                    topic,
+
+                                questionNumber:
+                                    currentQuestionNumber,
+
+                                question:
+                                    questionBeingAnswered,
+
+                                answer:
+                                    answer
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await readJson(
+                    response
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    data.error ||
+                    "Unable to evaluate answer."
+                );
+
+            }
+
+
+            const score =
+                Number(
+                    data.score
+                ) || 0;
+
+
+            totalScore +=
+                score;
+
+
+            answeredQuestions.push({
+
+                question:
+                    questionBeingAnswered,
+
+                answer:
+                    answer,
+
+                score:
+                    score,
+
+                feedback:
+                    data.feedback || ""
+
+            });
+
+
+            /* =========================================
+               DATABASE SAVE
+               ========================================= */
+
+            await saveAttemptToDatabase(
+
+                questionBeingAnswered,
+
+                answer,
+
+                score,
+
+                data.feedback || ""
+
+            );
+
+
+            /* =========================================
+               AI FEEDBACK
+               ========================================= */
+
+            if (
+                data.feedback
+            ) {
+
+                addMessage(
+                    "assistant",
+                    data.feedback
+                );
+
+
+                status.innerText =
+                    "🤖 AI is speaking...";
+
+
+                await speak(
+                    data.feedback
+                );
+
+            }
+
+
+            /* =========================================
+               FINISH
+               ========================================= */
+
+            if (
+                data.finished === true ||
+                currentQuestionNumber >= 5 ||
+                !data.nextQuestion
+            ) {
+
+                await finishInterview();
+
+                return;
+
+            }
+
+
+            /* =========================================
+               NEXT QUESTION
+               ========================================= */
+
+            questionNumber++;
+
+
+            currentQuestion =
+                data.nextQuestion;
+
+
+            /*
+             * Small pause between feedback
+             * and the next question.
+             */
+
+            await wait(500);
+
+
+            addMessage(
+                "assistant",
+                currentQuestion
+            );
+
+
+            status.innerText =
+                "🤖 AI is speaking...";
+
+
+            await speak(
+                currentQuestion
+            );
+
+
+            /*
+             * Automatically listen after
+             * the next question.
+             */
+
+            status.innerText =
+                "🎤 Your turn — speak your answer";
+
+
+            endBtn.disabled =
+                false;
+
+
+            await wait(300);
+
+
+            startListening();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "ANSWER ERROR:",
+                error
+            );
+
+
+            status.innerText =
+                "❌ " +
+                error.message;
+
+
+            endBtn.disabled =
+                false;
+
+
+            /*
+             * Try listening again after
+             * evaluation error.
+             */
+
+            await wait(500);
+
+
+            startListening();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       END INTERVIEW
+       ===================================================== */
+
+    endBtn.addEventListener(
+        "click",
+        async function () {
+
+            await finishInterview();
+
+        }
+    );
+
+
+    /* =====================================================
+       FINISH INTERVIEW
+       ===================================================== */
+
+    async function finishInterview() {
+
+        if (!interviewRunning) {
+
+            return;
+
+        }
+
+
+        interviewRunning =
+            false;
+
+
+        stopRecognition();
+
+
+        if (
+            "speechSynthesis" in window
+        ) {
+
+            window.speechSynthesis.cancel();
+
+        }
+
+
+        endBtn.disabled =
+            true;
+
+
+        status.innerText =
+            "Preparing final feedback...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/free-ai-interview/final",
+                    {
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json",
+
+                            ...getAuthHeader()
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                interviewId:
+                                    interviewId,
+
+                                language:
+                                    language,
+
+                                difficulty:
+                                    difficulty,
+
+                                topic:
+                                    topic,
+
+                                attempts:
+                                    answeredQuestions
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await readJson(
+                    response
+                );
+
+
+            if (response.ok) {
+
+                showFinalResult(
+                    data
+                );
+
+            }
+            else {
+
+                showLocalResult();
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "FINAL RESULT ERROR:",
+                error
+            );
+
+
+            showLocalResult();
+
+        }
+
+
+        status.innerText =
+            "✅ Interview completed";
+
+
+        startBtn.style.display =
+            "block";
+
+
+        startBtn.disabled =
+            false;
+
+
+        endBtn.style.display =
+            "none";
+
+
+        endBtn.disabled =
+            false;
+
+    }
+
+
+    /* =====================================================
+       FINAL RESULT
+       ===================================================== */
+
+    function showFinalResult(
+        data
+    ) {
+
+        resultSection.style.display =
+            "block";
+
+
+        document.getElementById(
+            "resultLanguage"
+        ).innerText =
+            language;
+
+
+        document.getElementById(
+            "resultDifficulty"
+        ).innerText =
+            difficulty;
+
+
+        document.getElementById(
+            "resultTopic"
+        ).innerText =
+            topic;
+
+
+        const finalScore =
+            Number(
+                data.score
+            ) || 0;
+
+
+        document.getElementById(
+            "score"
+        ).innerText =
+            "Score: " +
+            finalScore +
+            "/10";
+
+
+        document.getElementById(
+            "performance"
+        ).innerText =
+            data.performance ||
+            "Interview completed with " +
+            answeredQuestions.length +
+            " answered question(s).";
+
+
+        document.getElementById(
+            "strengths"
+        ).innerHTML =
+            makeList(
+                data.strengths ||
+                []
+            );
+
+
+        document.getElementById(
+            "improvements"
+        ).innerHTML =
+            makeList(
+                data.improvements ||
+                []
+            );
+
+
+        document.getElementById(
+            "feedback"
+        ).innerText =
+            data.feedback ||
+            "Keep practicing and improve your technical explanations.";
+
+
+        resultSection.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* =====================================================
+       LOCAL RESULT
+       ===================================================== */
+
+    function showLocalResult() {
+
+        const count =
+            answeredQuestions.length;
+
+
+        const score =
+            count === 0
+                ? 0
+                : Math.round(
+                    totalScore / count
+                );
+
+
+        resultSection.style.display =
+            "block";
+
+
+        document.getElementById(
+            "resultLanguage"
+        ).innerText =
+            language;
+
+
+        document.getElementById(
+            "resultDifficulty"
+        ).innerText =
+            difficulty;
+
+
+        document.getElementById(
+            "resultTopic"
+        ).innerText =
+            topic;
+
+
+        document.getElementById(
+            "score"
+        ).innerText =
+            "Score: " +
+            score +
+            "/10";
+
+
+        document.getElementById(
+            "performance"
+        ).innerText =
+            "You answered " +
+            count +
+            " question(s) in the " +
+            difficulty +
+            " level interview.";
+
+
+        document.getElementById(
+            "strengths"
+        ).innerHTML =
+            makeList([
+
+                "You participated in the mock interview.",
+
+                "You attempted to explain technical concepts.",
+
+                "You practiced speaking through technical questions."
+
+            ]);
+
+
+        document.getElementById(
+            "improvements"
+        ).innerHTML =
+            makeList([
+
+                "Give more structured technical answers.",
+
+                "Use correct technical terminology.",
+
+                "Practice explaining solutions with examples."
+
+            ]);
+
+
+        document.getElementById(
+            "feedback"
+        ).innerText =
+            "Continue practicing " +
+            topic +
+            " and focus on clarity, correctness and structured explanations.";
+
+
+        resultSection.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* =====================================================
+       AUTH HEADER
+       ===================================================== */
+
+    function getAuthHeader() {
+
+        const token =
+            localStorage.getItem(
+                "token"
+            );
+
+
+        if (!token) {
+
+            return {};
+
+        }
+
+
+        return {
+
+            "Authorization":
+                "Bearer " +
+                token
+
+        };
+
+    }
+
+
+    /* =====================================================
+       JSON HELPER
+       ===================================================== */
+
+    async function readJson(
+        response
+    ) {
+
+        const text =
+            await response.text();
+
+
+        if (!text) {
+
+            return {};
+
+        }
+
+
+        try {
+
+            return JSON.parse(
+                text
+            );
+
+        }
+        catch (error) {
+
+            return {
+                message: text
+            };
+
+        }
+
+    }
+
+
+    /* =====================================================
+       LIST HELPER
+       ===================================================== */
+
+    function makeList(
+        items
+    ) {
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+
+            return (
+                "<li>No detailed information available.</li>"
+            );
+
+        }
+
+
+        return items
+            .map(
+                function(item) {
+
+                    return (
+                        "<li>" +
+                        escapeHTML(item) +
+                        "</li>"
+                    );
+
+                }
+            )
+            .join("");
+
+    }
+
+
+    /* =====================================================
+       HTML ESCAPE
+       ===================================================== */
+
+    function escapeHTML(
+        text
+    ) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            text == null
+                ? ""
+                : String(text);
+
+
+        return div.innerHTML;
+
+    }
+
+</script>
+
+</body>
+</html>

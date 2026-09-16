@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PlaceAI | Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f7f9fc;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        /* ================= LOGO ================= */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-svg {
+            width: 225px;
+            height: 62px;
+            display: block;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .logout-btn {
+            padding: 9px 16px;
+            border: 1px solid #2563eb;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* ================= WELCOME ================= */
+
+        .welcome {
+            padding: 45px 6% 20px;
+            text-align: left;
+        }
+
+        .welcome h1 {
+            font-size: 34px;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+
+        .welcome p {
+            color: #64748b;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 88%;
+            max-width: 1150px;
+            margin: 20px auto 70px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* ================= CARDS ================= */
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 27px;
+            background: #fff;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: #bfdbfe;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+        }
+
+        .feature-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 9px;
+            background: #eff6ff;
+            color: #2563eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h2 {
+            font-size: 20px;
+            margin-bottom: 9px;
+            color: #111827;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .feature-btn {
+            display: inline-block;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 30px 25px;
+            background: #fff;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-logo-svg {
+            width: 200px;
+            height: 58px;
+            display: block;
+        }
+
+        .footer-text {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .logo-svg {
+                width: 210px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-right {
+                gap: 8px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .welcome {
+                padding: 30px 5%;
+            }
+
+            .container {
+                width: 90%;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .logo-svg {
+                width: 190px;
+                height: 55px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+
+    <!-- PLACEAI LOGO -->
+
+    <a href="/" class="logo">
+
+        <svg
+            class="logo-svg"
+            viewBox="0 0 700 180"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="PlaceAI Logo">
+
+            <defs>
+
+                <linearGradient
+                    id="dashboardLogoGradient"
+                    x1="0%"
+                    y1="100%"
+                    x2="100%"
+                    y2="0%">
+
+                    <stop
+                        offset="0%"
+                        stop-color="#172f78"/>
+
+                    <stop
+                        offset="55%"
+                        stop-color="#1263d7"/>
+
+                    <stop
+                        offset="100%"
+                        stop-color="#2389ff"/>
+
+                </linearGradient>
+
+            </defs>
+
+
+            <!-- GRADUATION CAP -->
+
+            <path
+                d="M20 70
+                   L115 20
+                   L210 70
+                   L115 120
+                   Z"
+                fill="url(#dashboardLogoGradient)"
+            />
+
+
+            <!-- CAP LOWER -->
+
+            <path
+                d="M45 80
+                   L45 122
+                   C45 141 79 160 115 169
+                   C151 160 185 141 185 122
+                   L185 80
+                   L115 120
+                   Z"
+                fill="#10285f"
+            />
+
+
+            <!-- BLUE FRONT -->
+
+            <path
+                d="M115 120
+                   L185 80
+                   L185 122
+                   C176 141 151 158 115 169
+                   Z"
+                fill="#1680ef"
+            />
+
+
+            <!-- TASSEL -->
+
+            <rect
+                x="205"
+                y="71"
+                width="6"
+                height="57"
+                rx="3"
+                fill="#172033"
+            />
+
+            <circle
+                cx="208"
+                cy="138"
+                r="8"
+                fill="#1263d7"
+            />
+
+
+            <!-- SPARKLE -->
+
+            <path
+                d="M118 0
+                   L125 18
+                   L143 25
+                   L125 32
+                   L118 50
+                   L111 32
+                   L93 25
+                   L111 18
+                   Z"
+                fill="#1263d7"
+            />
+
+
+            <!-- PLACE -->
+
+            <text
+                x="240"
+                y="105"
+                font-family="Arial, Helvetica, sans-serif"
+                font-size="82"
+                font-weight="700"
+                letter-spacing="-3"
+                fill="#081b4f">
+
+                Place
+
+            </text>
+
+
+            <!-- AI -->
+
+            <text
+                x="450"
+                y="105"
+                font-family="Arial, Helvetica, sans-serif"
+                font-size="82"
+                font-weight="700"
+                letter-spacing="-3"
+                fill="#1680ef">
+
+                AI
+
+            </text>
+
+
+            <!-- TAGLINE -->
+
+            <text
+                x="243"
+                y="140"
+                font-family="Arial, Helvetica, sans-serif"
+                font-size="19"
+                font-weight="600"
+                letter-spacing="2"
+                fill="#10285f">
+
+                LEARN TODAY. GET PLACED TOMORROW.
+
+            </text>
+
+        </svg>
+
+    </a>
+
+
+    <div class="nav-right">
+
+        <span
+            class="user-name"
+            id="navUserName">
+
+            User
+
+        </span>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= WELCOME ================= -->
+
+<section class="welcome">
+
+    <h1 id="welcomeName">
+        Welcome 👋
+    </h1>
+
+    <p id="welcomeEmail">
+        Ready for your placement preparation?
+    </p>
+
+</section>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+    <h1 class="page-title">
+        Placement Preparation
+    </h1>
+
+    <p class="page-subtitle">
+        Choose what you want to practice today.
+    </p>
+
+
+    <div class="features">
+
+
+        <!-- 1. APTITUDE -->
+
+        <div
+            class="feature-card"
+            onclick="window.location.href='/aptitude.html'">
+
+            <div class="feature-icon">
+                🧠
+            </div>
+
+            <h2>
+                Aptitude
+            </h2>
+
+            <p>
+                Practice quantitative aptitude,
+                logical reasoning and verbal ability
+                questions.
+            </p>
+
+            <span class="feature-btn">
+                Start Aptitude →
+            </span>
+
+        </div>
+
+
+
+        <!-- 2. CODING -->
+
+        <div
+            class="feature-card"
+            onclick="window.location.href='/coding.html'">
+
+            <div class="feature-icon">
+                💻
+            </div>
+
+            <h2>
+                Coding Rounds
+            </h2>
+
+            <p>
+                Solve coding problems and improve
+                your programming and DSA skills.
+            </p>
+
+            <span class="feature-btn">
+                Start Coding →
+            </span>
+
+        </div>
+
+
+
+        <!-- 3. AI INTERVIEW -->
+
+        <div
+            class="feature-card"
+            onclick="window.location.href='/vapi-interview.html'">
+
+            <div class="feature-icon">
+                🎤
+            </div>
+
+            <h2>
+                AI Interview
+            </h2>
+
+            <p>
+                Practice realistic technical interviews
+                with an AI-powered interviewer.
+            </p>
+
+            <span class="feature-btn">
+                Start Interview →
+            </span>
+
+        </div>
+
+
+
+        <!-- 4. FEEDBACK -->
+
+        <div
+            class="feature-card"
+            onclick="window.location.href='/feedback.html'">
+
+            <div class="feature-icon">
+                💬
+            </div>
+
+            <h2>
+                Feedback
+            </h2>
+
+            <p>
+                Review your interview performance,
+                strengths and areas for improvement.
+            </p>
+
+            <span class="feature-btn">
+                View Feedback →
+            </span>
+
+        </div>
+
+
+
+        <!-- 5. COMPANY -->
+
+        <div
+            class="feature-card"
+            onclick="window.location.href='/companies.html'">
+
+            <div class="feature-icon">
+                🏢
+            </div>
+
+            <h2>
+                Company Preparation Reviews
+            </h2>
+
+            <p>
+                Read company reviews and share your placement experience.
+            </p>
+
+            <span class="feature-btn">
+                Explore Reviews →
+            </span>
+
+        </div>
+
+
+
+        <!-- 6. PROGRESS -->
+
+        <div
+            class="feature-card"
+            onclick="window.location.href='/progress.html'">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <h2>
+                Your Progress
+            </h2>
+
+            <p>
+                View your aptitude and coding attempts,
+                accuracy, difficulty-wise performance
+                and recent activity.
+            </p>
+
+            <span class="feature-btn">
+                View Progress →
+            </span>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+
+        <div class="footer-logo">
+
+            <svg
+                class="footer-logo-svg"
+                viewBox="0 0 700 180"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="PlaceAI Logo">
+
+                <defs>
+
+                    <linearGradient
+                        id="dashboardFooterGradient"
+                        x1="0%"
+                        y1="100%"
+                        x2="100%"
+                        y2="0%">
+
+                        <stop
+                            offset="0%"
+                            stop-color="#172f78"/>
+
+                        <stop
+                            offset="55%"
+                            stop-color="#1263d7"/>
+
+                        <stop
+                            offset="100%"
+                            stop-color="#2389ff"/>
+
+                    </linearGradient>
+
+                </defs>
+
+
+                <path
+                    d="M20 70
+                       L115 20
+                       L210 70
+                       L115 120
+                       Z"
+                    fill="url(#dashboardFooterGradient)"
+                />
+
+
+                <path
+                    d="M45 80
+                       L45 122
+                       C45 141 79 160 115 169
+                       C151 160 185 141 185 122
+                       L185 80
+                       L115 120
+                       Z"
+                    fill="#10285f"
+                />
+
+
+                <path
+                    d="M115 120
+                       L185 80
+                       L185 122
+                       C176 141 151 158 115 169
+                       Z"
+                    fill="#1680ef"
+                />
+
+
+                <rect
+                    x="205"
+                    y="71"
+                    width="6"
+                    height="57"
+                    rx="3"
+                    fill="#172033"
+                />
+
+
+                <circle
+                    cx="208"
+                    cy="138"
+                    r="8"
+                    fill="#1263d7"
+                />
+
+
+                <path
+                    d="M118 0
+                       L125 18
+                       L143 25
+                       L125 32
+                       L118 50
+                       L111 32
+                       L93 25
+                       L111 18
+                       Z"
+                    fill="#1263d7"
+                />
+
+
+                <text
+                    x="240"
+                    y="105"
+                    font-family="Arial, Helvetica, sans-serif"
+                    font-size="82"
+                    font-weight="700"
+                    letter-spacing="-3"
+                    fill="#081b4f">
+
+                    Place
+
+                </text>
+
+
+                <text
+                    x="450"
+                    y="105"
+                    font-family="Arial, Helvetica, sans-serif"
+                    font-size="82"
+                    font-weight="700"
+                    letter-spacing="-3"
+                    fill="#1680ef">
+
+                    AI
+
+                </text>
+
+
+                <!-- BIGGER TAGLINE -->
+
+                <text
+                    x="243"
+                    y="140"
+                    font-family="Arial, Helvetica, sans-serif"
+                    font-size="19"
+                    font-weight="600"
+                    letter-spacing="2"
+                    fill="#10285f">
+
+                    LEARN TODAY. GET PLACED TOMORROW.
+
+                </text>
+
+            </svg>
+
+        </div>
+
+
+        <div class="footer-text">
+
+            © 2026 PlaceAI.
+            Placement preparation made simple.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    /* ================= LOGIN CHECK ================= */
+
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn");
+
+
+    const placeaiUser =
+        localStorage.getItem("placeaiUser");
+
+
+    if (
+        isLoggedIn !== "true" ||
+        !placeaiUser
+    ) {
+
+        window.location.replace(
+            "/login.html"
+        );
+
+    }
+
+
+    /* ================= USER DATA ================= */
+
+    try {
+
+        const user =
+            JSON.parse(placeaiUser);
+
+
+        const fullName =
+            user.fullName || "User";
+
+
+        const email =
+            user.email || "";
+
+
+        document.getElementById(
+            "welcomeName"
+        ).innerText =
+            "Welcome, " +
+            fullName +
+            " 👋";
+
+
+        document.getElementById(
+            "welcomeEmail"
+        ).innerText =
+            email +
+            " • Ready for your placement preparation?";
+
+
+        document.getElementById(
+            "navUserName"
+        ).innerText =
+            fullName;
+
+    }
+
+
+    /* ================= INVALID USER ================= */
+
+    catch (error) {
+
+        console.error(
+            "USER DATA ERROR:",
+            error
+        );
+
+
+        localStorage.removeItem(
+            "placeaiUser"
+        );
+
+
+        localStorage.removeItem(
+            "isLoggedIn"
+        );
+
+
+        localStorage.removeItem(
+            "token"
+        );
+
+
+        window.location.replace(
+            "/login.html"
+        );
+
+    }
+
+
+    /* ================= LOGOUT ================= */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "placeaiUser"
+        );
+
+
+        localStorage.removeItem(
+            "isLoggedIn"
+        );
+
+
+        localStorage.removeItem(
+            "token"
+        );
+
+
+        window.location.replace(
+            "/login.html"
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

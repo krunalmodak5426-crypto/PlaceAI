@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PlaceAI | Company Reviews</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f9fc;
+            color: #172033;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 6%;
+        }
+
+
+        .logo {
+            color: #2563eb;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        .back {
+            color: #374151;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+
+            margin: 40px auto;
+        }
+
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+
+
+        /* =========================
+           REVIEW FORM
+        ========================= */
+
+        .review-box {
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .review-box h2 {
+
+            margin-bottom: 22px;
+
+            font-size: 21px;
+        }
+
+
+        .form-group {
+
+            margin-bottom: 18px;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccd3df;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            font-family: Arial, sans-serif;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            outline: none;
+
+            border-color: #2563eb;
+        }
+
+
+        textarea {
+
+            min-height: 120px;
+
+            resize: vertical;
+        }
+
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .button-row {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .post-btn,
+        .view-btn {
+
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        .post-btn:hover,
+        .view-btn:hover {
+
+            background: #1d4ed8;
+        }
+
+
+        .post-btn:disabled {
+
+            background: #93aee8;
+
+            cursor: not-allowed;
+        }
+
+
+        #formMessage {
+
+            margin-top: 15px;
+
+            font-weight: bold;
+
+            min-height: 20px;
+        }
+
+
+
+        /* =========================
+           REVIEWS SECTION
+        ========================= */
+
+        .reviews-section {
+
+            margin-top: 30px;
+
+            scroll-margin-top: 20px;
+        }
+
+
+        .reviews-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .reviews-header h2 {
+
+            margin: 0;
+        }
+
+
+        .average {
+
+            color: #f59e0b;
+
+            font-weight: bold;
+        }
+
+
+
+        /* =========================
+           REVIEWS
+           SIMPLE COMMENT STYLE
+        ========================= */
+
+        #reviewsContainer {
+
+            background: transparent;
+
+            border: none;
+        }
+
+
+        .review-card {
+
+            background: transparent;
+
+            padding: 20px 4px;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+
+        .review-card:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .review-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .review-user {
+
+            font-weight: bold;
+
+            font-size: 15px;
+
+            color: #172033;
+
+            text-transform: none;
+        }
+
+
+        .review-rating {
+
+            color: #f59e0b;
+
+            font-size: 14px;
+
+            white-space: nowrap;
+        }
+
+
+        .review-company {
+
+            color: #2563eb;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .review-comment {
+
+            color: #374151;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+            margin-bottom: 7px;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+        }
+
+
+        .review-date {
+
+            color: #9ca3af;
+
+            font-size: 12px;
+        }
+
+
+        .empty {
+
+            background: transparent;
+
+            padding: 25px 5px;
+
+            color: #6b7280;
+
+            text-align: center;
+        }
+
+
+        .loading {
+
+            background: transparent;
+
+            padding: 20px 5px;
+
+            color: #6b7280;
+
+            text-align: center;
+        }
+
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                padding: 0 4%;
+            }
+
+
+            .container {
+
+                width: 92%;
+            }
+
+
+            .review-top {
+
+                flex-direction: column;
+
+                gap: 5px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        PlaceAI
+    </div>
+
+
+    <a
+        href="/dashboard.html"
+        class="back"
+    >
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+
+<main class="container">
+
+
+
+    <!-- =========================
+         PAGE TITLE
+    ========================= -->
+
+    <h1>
+        Company Reviews
+    </h1>
+
+
+    <p class="subtitle">
+        Read company reviews and share your placement experience.
+    </p>
+
+
+
+    <!-- =========================
+         WRITE REVIEW
+    ========================= -->
+
+    <div class="review-box">
+
+
+        <h2>
+            Write a Review
+        </h2>
+
+
+
+        <!-- COMPANY -->
+
+        <div class="form-group">
+
+            <label for="companyName">
+                Company
+            </label>
+
+
+            <input
+                type="text"
+                id="companyName"
+                placeholder="Enter company name"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+
+        <!-- RATING -->
+
+        <div class="form-group">
+
+            <label for="rating">
+                Rating
+            </label>
+
+
+            <select id="rating">
+
+                <option value="">
+                    Select Rating
+                </option>
+
+
+                <option value="5">
+                    5 - Excellent
+                </option>
+
+
+                <option value="4">
+                    4 - Good
+                </option>
+
+
+                <option value="3">
+                    3 - Average
+                </option>
+
+
+                <option value="2">
+                    2 - Poor
+                </option>
+
+
+                <option value="1">
+                    1 - Very Poor
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- COMMENT -->
+
+        <div class="form-group">
+
+            <label for="comment">
+                Your Review
+            </label>
+
+
+            <textarea
+                id="comment"
+                placeholder="Share your interview or placement experience..."
+            ></textarea>
+
+        </div>
+
+
+
+        <!-- =========================
+             BUTTONS
+        ========================= -->
+
+        <div class="button-row">
+
+
+            <button
+                type="button"
+                class="post-btn"
+                id="postReviewBtn"
+                onclick="postReview()"
+            >
+                Post Review
+            </button>
+
+
+
+            <button
+                type="button"
+                class="view-btn"
+                id="viewReviewsBtn"
+                onclick="scrollToReviews()"
+            >
+                View Reviews
+            </button>
+
+
+        </div>
+
+
+
+        <div id="formMessage"></div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         COMPANY REVIEWS
+    ========================= -->
+
+    <div
+        class="reviews-section"
+        id="reviewsSection"
+    >
+
+
+        <div class="reviews-header">
+
+
+            <h2 id="reviewsTitle">
+                Company Reviews
+            </h2>
+
+
+            <div
+                class="average"
+                id="averageRating"
+            >
+            </div>
+
+
+        </div>
+
+
+
+        <div id="reviewsContainer">
+
+            <div class="loading">
+                Loading reviews...
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+</main>
+
+
+
+<script>
+
+
+/* =================================================
+   LOGIN CHECK
+================================================= */
+
+const isLoggedIn =
+    localStorage.getItem(
+        "isLoggedIn"
+    );
+
+
+const storedUser =
+    localStorage.getItem(
+        "placeaiUser"
+    );
+
+
+const savedToken =
+    localStorage.getItem(
+        "token"
+    );
+
+
+if (
+    isLoggedIn !== "true" ||
+    !storedUser ||
+    !savedToken
+) {
+
+    window.location.href =
+        "/login.html";
+
+}
+
+
+
+let user = null;
+
+
+
+/* =================================================
+   USER DATA
+================================================= */
+
+try {
+
+    user =
+        JSON.parse(
+            storedUser
+        );
+
+}
+
+catch (error) {
+
+    console.error(
+        "USER DATA ERROR:",
+        error
+    );
+
+
+    localStorage.removeItem(
+        "token"
+    );
+
+
+    localStorage.removeItem(
+        "isLoggedIn"
+    );
+
+
+    localStorage.removeItem(
+        "placeaiUser"
+    );
+
+
+    window.location.href =
+        "/login.html";
+
+}
+
+
+
+/* =================================================
+   GET COMPANY NAME
+================================================= */
+
+function getCompanyName() {
+
+    return document
+        .getElementById(
+            "companyName"
+        )
+        .value
+        .trim();
+
+}
+
+
+
+/* =================================================
+   SCROLL TO REVIEWS
+================================================= */
+
+function scrollToReviews() {
+
+    const reviewsSection =
+        document.getElementById(
+            "reviewsSection"
+        );
+
+
+    if (reviewsSection) {
+
+        reviewsSection.scrollIntoView({
+
+            behavior:
+                "smooth",
+
+            block:
+                "start"
+
+        });
+
+    }
+
+}
+
+
+
+/* =================================================
+   POST REVIEW
+================================================= */
+
+async function postReview() {
+
+
+    const companyName =
+        getCompanyName();
+
+
+    const rating =
+        document
+            .getElementById(
+                "rating"
+            )
+            .value;
+
+
+    const comment =
+        document
+            .getElementById(
+                "comment"
+            )
+            .value
+            .trim();
+
+
+    const message =
+        document.getElementById(
+            "formMessage"
+        );
+
+
+    const button =
+        document.getElementById(
+            "postReviewBtn"
+        );
+
+
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    if (!companyName) {
+
+        message.innerText =
+            "❌ Please enter a company name.";
+
+        message.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+
+    if (!rating) {
+
+        message.innerText =
+            "❌ Please select a rating.";
+
+        message.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+
+    if (!comment) {
+
+        message.innerText =
+            "❌ Please write a review.";
+
+        message.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+
+    const currentToken =
+        localStorage.getItem(
+            "token"
+        );
+
+
+    if (!currentToken) {
+
+        message.innerText =
+            "❌ Login required.";
+
+        message.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+
+    if (
+        !user ||
+        !user.email
+    ) {
+
+        message.innerText =
+            "❌ User information not found. Please login again.";
+
+        message.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+
+    button.disabled =
+        true;
+
+
+    message.innerText =
+        "Posting review...";
+
+
+    message.style.color =
+        "#2563eb";
+
+
+
+    try {
+
+
+        const requestBody = {
+
+            email:
+                user.email,
+
+            companyName:
+                companyName,
+
+            rating:
+                Number(
+                    rating
+                ),
+
+            comment:
+                comment
+
+        };
+
+
+
+        console.log(
+            "REVIEW REQUEST:",
+            requestBody
+        );
+
+
+
+        const response =
+            await fetch(
+                "/api/company-reviews",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " +
+                            currentToken
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            requestBody
+                        )
+
+                }
+            );
+
+
+
+        const text =
+            await response.text();
+
+
+
+        console.log(
+            "POST STATUS:",
+            response.status
+        );
+
+
+        console.log(
+            "POST RESPONSE:",
+            text
+        );
+
+
+
+        /* =========================
+           LOGIN ERROR
+        ========================= */
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            message.innerText =
+                "❌ Login session expired. Please login again.";
+
+            message.style.color =
+                "red";
+
+
+            setTimeout(
+                function () {
+
+                    handleSessionExpired();
+
+                },
+                1200
+            );
+
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           OTHER ERROR
+        ========================= */
+
+        if (!response.ok) {
+
+            let errorMessage =
+                "Failed to post review.";
+
+
+            try {
+
+                const errorData =
+                    JSON.parse(
+                        text
+                    );
+
+
+                if (
+                    errorData.message
+                ) {
+
+                    errorMessage =
+                        errorData.message;
+
+                }
+
+                else if (
+                    errorData.error
+                ) {
+
+                    errorMessage =
+                        errorData.error;
+
+                }
+
+            }
+
+            catch (e) {
+
+                if (text) {
+
+                    errorMessage =
+                        text;
+
+                }
+
+            }
+
+
+
+            message.innerText =
+                "❌ " +
+                errorMessage;
+
+
+            message.style.color =
+                "red";
+
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        message.innerText =
+            "✅ Review posted successfully!";
+
+
+        message.style.color =
+            "green";
+
+
+
+        /* Clear rating */
+
+        document
+            .getElementById(
+                "rating"
+            )
+            .value = "";
+
+
+
+        /* Clear comment */
+
+        document
+            .getElementById(
+                "comment"
+            )
+            .value = "";
+
+
+
+        /*
+         * Refresh all reviews
+         */
+
+        await loadReviews();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "POST REVIEW ERROR:",
+            error
+        );
+
+
+        message.innerText =
+            "❌ " +
+            (
+                error.message ||
+                "Cannot connect to server."
+            );
+
+
+        message.style.color =
+            "red";
+
+    }
+
+
+    finally {
+
+        button.disabled =
+            false;
+
+    }
+
+}
+
+
+
+/* =================================================
+   LOAD ALL REVIEWS
+================================================= */
+
+async function loadReviews() {
+
+
+    const container =
+        document.getElementById(
+            "reviewsContainer"
+        );
+
+
+    const title =
+        document.getElementById(
+            "reviewsTitle"
+        );
+
+
+    const average =
+        document.getElementById(
+            "averageRating"
+        );
+
+
+    const currentToken =
+        localStorage.getItem(
+            "token"
+        );
+
+
+
+    title.innerText =
+        "Company Reviews";
+
+
+    average.innerText =
+        "";
+
+
+    container.innerHTML =
+        '<div class="loading">' +
+        'Loading reviews...' +
+        '</div>';
+
+
+
+    if (!currentToken) {
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'Please login again.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+
+    try {
+
+
+        /* =========================
+           GET ALL REVIEWS
+        ========================= */
+
+        const response =
+            await fetch(
+                "/api/company-reviews/all",
+                {
+
+                    method:
+                        "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " +
+                            currentToken
+
+                    }
+
+                }
+            );
+
+
+
+        const text =
+            await response.text();
+
+
+
+        console.log(
+            "GET ALL STATUS:",
+            response.status
+        );
+
+
+        console.log(
+            "GET ALL RESPONSE:",
+            text
+        );
+
+
+
+        /* =========================
+           LOGIN ERROR
+        ========================= */
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            handleSessionExpired();
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           API ERROR
+        ========================= */
+
+        if (!response.ok) {
+
+            container.innerHTML =
+                '<div class="empty">' +
+                'Unable to load reviews right now.' +
+                '</div>';
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           PARSE JSON
+        ========================= */
+
+        let reviews;
+
+
+        try {
+
+            reviews =
+                JSON.parse(
+                    text
+                );
+
+        }
+
+        catch (jsonError) {
+
+            console.error(
+                "INVALID JSON:",
+                jsonError
+            );
+
+
+            container.innerHTML =
+                '<div class="empty">' +
+                'Server returned invalid review data.' +
+                '</div>';
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           NO REVIEWS
+        ========================= */
+
+        if (
+            !reviews ||
+            reviews.length === 0
+        ) {
+
+            average.innerText =
+                "";
+
+
+            container.innerHTML =
+                '<div class="empty">' +
+                'No reviews yet. Be the first to review a company!' +
+                '</div>';
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           CALCULATE AVERAGE
+        ========================= */
+
+        let totalRating =
+            0;
+
+
+        reviews.forEach(
+            function (review) {
+
+                totalRating +=
+                    Number(
+                        review.rating ||
+                        0
+                    );
+
+            }
+        );
+
+
+        const averageValue =
+            totalRating /
+            reviews.length;
+
+
+        average.innerText =
+            "⭐ " +
+            averageValue.toFixed(1) +
+            " / 5 (" +
+            reviews.length +
+            " reviews)";
+
+
+
+        /* =========================
+           CLEAR OLD REVIEWS
+        ========================= */
+
+        container.innerHTML =
+            "";
+
+
+
+        /* =========================
+           CREATE REVIEWS
+        ========================= */
+
+        reviews.forEach(
+            function (review) {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "review-card";
+
+
+
+                /* =====================
+                   TOP ROW
+                ===================== */
+
+                const top =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                top.className =
+                    "review-top";
+
+
+
+                /* =====================
+                   USER NAME
+                ===================== */
+
+                const userName =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                userName.className =
+                    "review-user";
+
+
+                userName.innerText =
+                    review.userName ||
+                    "Anonymous";
+
+
+
+                /* =====================
+                   RATING
+                ===================== */
+
+                const rating =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                rating.className =
+                    "review-rating";
+
+
+                const numericRating =
+                    Number(
+                        review.rating ||
+                        0
+                    );
+
+
+                rating.innerText =
+                    "⭐".repeat(
+                        numericRating
+                    );
+
+
+
+                top.appendChild(
+                    userName
+                );
+
+
+                top.appendChild(
+                    rating
+                );
+
+
+
+                /* =====================
+                   COMPANY
+                ===================== */
+
+                const company =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                company.className =
+                    "review-company";
+
+
+                company.innerText =
+                    review.companyName ||
+                    "Company";
+
+
+
+                /* =====================
+                   COMMENT
+                ===================== */
+
+                const comment =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                comment.className =
+                    "review-comment";
+
+
+                comment.innerText =
+                    review.comment ||
+                    "";
+
+
+
+                /* =====================
+                   DATE
+                ===================== */
+
+                const date =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                date.className =
+                    "review-date";
+
+
+                date.innerText =
+                    formatDate(
+                        review.createdAt
+                    );
+
+
+
+                /* =====================
+                   ADD TO PAGE
+                ===================== */
+
+                card.appendChild(
+                    top
+                );
+
+
+                card.appendChild(
+                    company
+                );
+
+
+                card.appendChild(
+                    comment
+                );
+
+
+                card.appendChild(
+                    date
+                );
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "GET ALL REVIEWS ERROR:",
+            error
+        );
+
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'Unable to load reviews right now.' +
+            '</div>';
+
+    }
+
+}
+
+
+
+/* =================================================
+   FORMAT DATE
+================================================= */
+
+function formatDate(
+    dateString
+) {
+
+    if (!dateString) {
+
+        return "";
+
+    }
+
+
+    const date =
+        new Date(
+            dateString
+        );
+
+
+    if (
+        isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return dateString;
+
+    }
+
+
+    return date.toLocaleString();
+
+}
+
+
+
+/* =================================================
+   SESSION EXPIRED
+================================================= */
+
+function handleSessionExpired() {
+
+
+    alert(
+        "Your login session has expired. Please login again."
+    );
+
+
+    localStorage.removeItem(
+        "token"
+    );
+
+
+    localStorage.removeItem(
+        "isLoggedIn"
+    );
+
+
+    localStorage.removeItem(
+        "placeaiUser"
+    );
+
+
+    window.location.href =
+        "/login.html";
+
+}
+
+
+
+/* =================================================
+   COMPANY ENTER KEY
+================================================= */
+
+document
+    .getElementById(
+        "companyName"
+    )
+    .addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                /*
+                 * Enter does not post review.
+                 * It simply scrolls to reviews.
+                 */
+
+                scrollToReviews();
+
+            }
+
+        }
+    );
+
+
+
+/* =================================================
+   AUTO LOAD REVIEWS
+================================================= */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadReviews();
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

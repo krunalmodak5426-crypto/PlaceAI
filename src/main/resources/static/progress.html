@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PlaceAI | Your Progress</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f7f9fc;
+            color: #172033;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+
+        .logo {
+            color: #2563eb;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        .back {
+            color: #374151;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 40px auto 80px;
+        }
+
+
+        .page-header {
+            margin-bottom: 35px;
+        }
+
+
+        .page-header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+
+        .page-header p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+
+        /* ================= SUMMARY CARDS ================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 45px;
+        }
+
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+        }
+
+
+        .summary-card h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+
+        .stat {
+            background: #f8fafc;
+            border: 1px solid #edf0f4;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+
+        .stat-value {
+            display: block;
+            font-size: 25px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 5px;
+        }
+
+
+        .stat-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        /* ================= SECTION ================= */
+
+        .progress-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 35px;
+        }
+
+
+        .section-title {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+
+        .section-subtitle {
+            color: #64748b;
+            margin-bottom: 22px;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+
+        th {
+            background: #f8fafc;
+            color: #374151;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+
+        td {
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            color: #4b5563;
+        }
+
+
+        td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: #172033;
+        }
+
+
+        .total-row {
+            background: #f8fafc;
+            font-weight: bold;
+        }
+
+
+        .total-row td {
+            color: #172033;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status-passed {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+
+        .status-failed {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+
+        .status-correct {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+
+        .status-wrong {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+
+        /* ================= AI INTERVIEW ================= */
+
+        .ai-interview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+
+        .ai-stat {
+            background: #f8fafc;
+            border: 1px solid #edf0f4;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+        }
+
+
+        .ai-stat-value {
+            display: block;
+            font-size: 25px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 6px;
+        }
+
+
+        .ai-stat-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        .ai-interview-table td {
+            vertical-align: middle;
+        }
+
+
+        /* ================= RECENT ACTIVITY ================= */
+
+        .recent-table td {
+            vertical-align: middle;
+        }
+
+
+        .activity-question {
+            max-width: 420px;
+            line-height: 1.5;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        #loading {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 40px;
+            text-align: center;
+            color: #64748b;
+        }
+
+
+        #errorBox {
+            display: none;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 28px 6%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .footer-logo {
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 21px;
+        }
+
+
+        .footer-text {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width: 850px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .ai-interview-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .progress-section {
+                padding: 18px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .ai-interview-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= LOGIN CHECK ================= -->
+
+<script>
+
+    const isLoggedIn =
+        localStorage.getItem(
+            "isLoggedIn"
+        );
+
+
+    const placeaiUser =
+        localStorage.getItem(
+            "placeaiUser"
+        );
+
+
+    if (
+        isLoggedIn !== "true" ||
+        !placeaiUser
+    ) {
+
+        window.location.href =
+            "/login.html";
+
+    }
+
+</script>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        PlaceAI
+    </div>
+
+
+    <a
+        href="/dashboard.html"
+        class="back"
+    >
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+
+    <div class="page-header">
+
+        <h1>
+            Your Progress
+        </h1>
+
+
+        <p id="welcomeText">
+            Loading your progress...
+        </p>
+
+    </div>
+
+
+    <div id="errorBox"></div>
+
+
+    <div id="loading">
+        Loading your progress...
+    </div>
+
+
+    <div
+        id="progressContent"
+        style="display:none;"
+    >
+
+
+        <!-- ==================================================
+             SUMMARY CARDS
+             ================================================== -->
+
+        <div class="summary-grid">
+
+
+            <!-- APTITUDE -->
+
+            <div class="summary-card">
+
+                <h2>
+                    🧠 Aptitude
+                </h2>
+
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="aptitudeTotal"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="stat-label">
+                            Total Attempted
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="aptitudeCorrect"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="stat-label">
+                            Correct
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="aptitudeWrong"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="stat-label">
+                            Wrong
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="aptitudeAccuracy"
+                        >
+                            0%
+                        </span>
+
+
+                        <span class="stat-label">
+                            Accuracy
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- CODING -->
+
+            <div class="summary-card">
+
+                <h2>
+                    💻 Coding
+                </h2>
+
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="codingTotal"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="stat-label">
+                            Total Attempted
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="codingPassed"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="stat-label">
+                            Passed
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="codingFailed"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="stat-label">
+                            Failed
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span
+                            class="stat-value"
+                            id="codingSuccessRate"
+                        >
+                            0%
+                        </span>
+
+
+                        <span class="stat-label">
+                            Success Rate
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             APTITUDE TABLE
+             ================================================== -->
+
+        <section class="progress-section">
+
+            <h2 class="section-title">
+                🧠 Aptitude Progress
+            </h2>
+
+
+            <p class="section-subtitle">
+                Topic-wise and difficulty-wise attempts
+            </p>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Topic
+                            </th>
+
+                            <th>
+                                Easy
+                            </th>
+
+                            <th>
+                                Medium
+                            </th>
+
+                            <th>
+                                Hard
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="aptitudeTableBody"
+                    >
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             CODING TABLE
+             ================================================== -->
+
+        <section class="progress-section">
+
+            <h2 class="section-title">
+                💻 Coding Progress
+            </h2>
+
+
+            <p class="section-subtitle">
+                Language-wise and difficulty-wise attempts
+            </p>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Language
+                            </th>
+
+                            <th>
+                                Easy
+                            </th>
+
+                            <th>
+                                Medium
+                            </th>
+
+                            <th>
+                                Hard
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="codingTableBody"
+                    >
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             AI INTERVIEW PROGRESS
+             ================================================== -->
+
+        <section class="progress-section">
+
+            <h2 class="section-title">
+                🤖 AI Interview Progress
+            </h2>
+
+
+            <p class="section-subtitle">
+                Your technical mock interview performance
+            </p>
+
+
+            <div
+                id="aiInterviewLoading"
+                style="
+                    color:#64748b;
+                    padding:15px 0;
+                "
+            >
+                Loading AI interview progress...
+            </div>
+
+
+            <div
+                id="aiInterviewContent"
+                style="display:none;"
+            >
+
+
+                <div class="ai-interview-grid">
+
+
+                    <div class="ai-stat">
+
+                        <span
+                            class="ai-stat-value"
+                            id="aiInterviewCount"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="ai-stat-label">
+                            Total Interviews
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-stat">
+
+                        <span
+                            class="ai-stat-value"
+                            id="aiQuestionCount"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="ai-stat-label">
+                            Questions Answered
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-stat">
+
+                        <span
+                            class="ai-stat-value"
+                            id="aiAverageScore"
+                        >
+                            0/10
+                        </span>
+
+
+                        <span class="ai-stat-label">
+                            Average Score
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-stat">
+
+                        <span
+                            class="ai-stat-value"
+                            id="aiPassedCount"
+                        >
+                            0
+                        </span>
+
+
+                        <span class="ai-stat-label">
+                            Passed Questions
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <div style="margin-top:25px;">
+
+                    <h3
+                        style="
+                            margin-bottom:15px;
+                            font-size:18px;
+                        "
+                    >
+                        Recent AI Interview Activity
+                    </h3>
+
+
+                    <div class="table-wrapper">
+
+                        <table
+                            class="ai-interview-table"
+                        >
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Interview
+                                    </th>
+
+                                    <th>
+                                        Language
+                                    </th>
+
+                                    <th>
+                                        Topic
+                                    </th>
+
+                                    <th>
+                                        Difficulty
+                                    </th>
+
+                                    <th>
+                                        Question
+                                    </th>
+
+                                    <th>
+                                        Score
+                                    </th>
+
+                                    <th>
+                                        Result
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody
+                                id="aiInterviewTableBody"
+                            >
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             RECENT ACTIVITY
+             ================================================== -->
+
+        <section class="progress-section">
+
+            <h2 class="section-title">
+                📝 Recent Activity
+            </h2>
+
+
+            <p class="section-subtitle">
+                Your latest aptitude and coding attempts
+            </p>
+
+
+            <div class="table-wrapper">
+
+                <table class="recent-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Question / Problem
+                            </th>
+
+                            <th>
+                                Topic / Language
+                            </th>
+
+                            <th>
+                                Difficulty
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Date & Time
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="recentActivityBody"
+                    >
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        PlaceAI
+    </div>
+
+
+    <div class="footer-text">
+        © 2026 PlaceAI. Placement preparation made simple.
+    </div>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+    /* ==================================================
+       USER
+       ================================================== */
+
+    const user =
+        JSON.parse(
+            localStorage.getItem(
+                "placeaiUser"
+            )
+        );
+
+
+    /* ==================================================
+       LOAD PROGRESS
+       ================================================== */
+
+    async function loadProgress() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/progress?email=" +
+                    encodeURIComponent(
+                        user.email
+                    )
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to load progress."
+                );
+
+            }
+
+
+            /* ================= USER ================= */
+
+            document.getElementById(
+                "welcomeText"
+            ).innerText =
+                "Here is your preparation activity, " +
+                (data.fullName || "User") +
+                ".";
+
+
+            /* ================= APTITUDE ================= */
+
+            document.getElementById(
+                "aptitudeTotal"
+            ).innerText =
+                data.aptitudeTotal;
+
+
+            document.getElementById(
+                "aptitudeCorrect"
+            ).innerText =
+                data.aptitudeCorrect;
+
+
+            document.getElementById(
+                "aptitudeWrong"
+            ).innerText =
+                data.aptitudeWrong;
+
+
+            document.getElementById(
+                "aptitudeAccuracy"
+            ).innerText =
+                data.aptitudeAccuracy +
+                "%";
+
+
+            /* ================= CODING ================= */
+
+            document.getElementById(
+                "codingTotal"
+            ).innerText =
+                data.codingTotal;
+
+
+            document.getElementById(
+                "codingPassed"
+            ).innerText =
+                data.codingPassed;
+
+
+            document.getElementById(
+                "codingFailed"
+            ).innerText =
+                data.codingFailed;
+
+
+            document.getElementById(
+                "codingSuccessRate"
+            ).innerText =
+                data.codingSuccessRate +
+                "%";
+
+
+            /* ================= TABLES ================= */
+
+            buildAptitudeTable(
+                data.aptitudeTable
+            );
+
+
+            buildCodingTable(
+                data.codingTable
+            );
+
+
+            buildRecentActivity(
+                data.recentActivity
+            );
+
+
+            /* ================= AI ================= */
+
+            await loadAiInterviewProgress();
+
+
+            /* ================= SHOW ================= */
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "progressContent"
+            ).style.display =
+                "block";
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "PROGRESS ERROR:",
+                error
+            );
+
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            const errorBox =
+                document.getElementById(
+                    "errorBox"
+                );
+
+
+            errorBox.style.display =
+                "block";
+
+
+            errorBox.innerText =
+                "Unable to load progress: " +
+                error.message;
+
+        }
+
+    }
+
+
+    /* ==================================================
+       AI INTERVIEW PROGRESS
+       ================================================== */
+
+    async function loadAiInterviewProgress() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/ai-interviews/attempts?email=" +
+                    encodeURIComponent(
+                        user.email
+                    )
+                );
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    "Unable to load AI interview data."
+                );
+
+            }
+
+
+            const attempts =
+                await response.json();
+
+
+            if (
+                !Array.isArray(attempts) ||
+                attempts.length === 0
+            ) {
+
+                showEmptyAiInterview();
+
+                return;
+
+            }
+
+
+            const scored =
+                attempts.filter(
+                    function(item) {
+
+                        return (
+                            item.score !== null &&
+                            item.score !== undefined
+                        );
+
+                    }
+                );
+
+
+            /* ================= INTERVIEWS ================= */
+
+            const interviewIds =
+                new Set();
+
+
+            attempts.forEach(
+                function(item) {
+
+                    if (
+                        item.interviewId
+                    ) {
+
+                        interviewIds.add(
+                            item.interviewId
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* ================= SCORE ================= */
+
+            let totalScore =
+                0;
+
+
+            let passedCount =
+                0;
+
+
+            scored.forEach(
+                function(item) {
+
+                    const score =
+                        Number(
+                            item.score || 0
+                        );
+
+
+                    totalScore +=
+                        score;
+
+
+                    if (
+                        score >= 5
+                    ) {
+
+                        passedCount++;
+
+                    }
+
+                }
+            );
+
+
+            const averageScore =
+                scored.length > 0
+                    ? totalScore /
+                      scored.length
+                    : 0;
+
+
+            /* ================= SUMMARY ================= */
+
+            document.getElementById(
+                "aiInterviewCount"
+            ).innerText =
+                interviewIds.size;
+
+
+            document.getElementById(
+                "aiQuestionCount"
+            ).innerText =
+                attempts.length;
+
+
+            document.getElementById(
+                "aiAverageScore"
+            ).innerText =
+                averageScore.toFixed(1) +
+                "/10";
+
+
+            document.getElementById(
+                "aiPassedCount"
+            ).innerText =
+                passedCount;
+
+
+            /* ================= TABLE ================= */
+
+            buildAiInterviewTable(
+                attempts
+            );
+
+
+            document.getElementById(
+                "aiInterviewLoading"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "aiInterviewContent"
+            ).style.display =
+                "block";
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "AI INTERVIEW PROGRESS ERROR:",
+                error
+            );
+
+
+            document.getElementById(
+                "aiInterviewLoading"
+            ).innerText =
+                "Unable to load AI interview progress.";
+
+        }
+
+    }
+
+
+    /* ==================================================
+       EMPTY AI INTERVIEW
+       ================================================== */
+
+    function showEmptyAiInterview() {
+
+        document.getElementById(
+            "aiInterviewCount"
+        ).innerText =
+            "0";
+
+
+        document.getElementById(
+            "aiQuestionCount"
+        ).innerText =
+            "0";
+
+
+        document.getElementById(
+            "aiAverageScore"
+        ).innerText =
+            "0/10";
+
+
+        document.getElementById(
+            "aiPassedCount"
+        ).innerText =
+            "0";
+
+
+        document.getElementById(
+            "aiInterviewTableBody"
+        ).innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                        color:#64748b;
+                    "
+                >
+                    No AI interview attempts yet.
+                </td>
+
+            </tr>
+
+        `;
+
+
+        document.getElementById(
+            "aiInterviewLoading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "aiInterviewContent"
+        ).style.display =
+            "block";
+
+    }
+
+
+    /* ==================================================
+       AI INTERVIEW TABLE
+       ================================================== */
+
+    function buildAiInterviewTable(
+        attempts
+    ) {
+
+        const body =
+            document.getElementById(
+                "aiInterviewTableBody"
+            );
+
+
+        body.innerHTML =
+            "";
+
+
+        /*
+         * Keep the same interview ID internally,
+         * but show a simple Interview 1, Interview 2...
+         */
+        const interviewNumbers =
+            new Map();
+
+        let nextInterviewNumber =
+            1;
+
+
+        /*
+         * Calculate average score for each interview.
+         */
+        const interviewScores =
+            new Map();
+
+
+        attempts.forEach(
+            function(item) {
+
+                const id =
+                    item.interviewId ||
+                    "UNKNOWN_INTERVIEW";
+
+
+                if (
+                    !interviewNumbers.has(id)
+                ) {
+
+                    interviewNumbers.set(
+                        id,
+                        nextInterviewNumber
+                    );
+
+                    nextInterviewNumber++;
+
+                }
+
+
+                if (
+                    !interviewScores.has(id)
+                ) {
+
+                    interviewScores.set(
+                        id,
+                        {
+                            total: 0,
+                            count: 0
+                        }
+                    );
+
+                }
+
+
+                const score =
+                    Number(
+                        item.score || 0
+                    );
+
+
+                const data =
+                    interviewScores.get(id);
+
+
+                data.total +=
+                    score;
+
+                data.count++;
+
+            }
+        );
+
+
+        attempts
+            .slice(0, 20)
+            .forEach(
+                function(item) {
+
+                    const tr =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const id =
+                        item.interviewId ||
+                        "UNKNOWN_INTERVIEW";
+
+
+                    const interviewData =
+                        interviewScores.get(id);
+
+
+                    const interviewAverage =
+                        interviewData &&
+                        interviewData.count > 0
+                            ? interviewData.total /
+                              interviewData.count
+                            : 0;
+
+
+                    /*
+                     * Interview-level performance:
+                     * 0-4.9   = Poor
+                     * 5-7.9   = Good
+                     * 8-10    = Excellent
+                     */
+                    let performance =
+                        "Poor";
+
+
+                    let performanceClass =
+                        "status-failed";
+
+
+                    if (
+                        interviewAverage >= 8
+                    ) {
+
+                        performance =
+                            "Excellent";
+
+                        performanceClass =
+                            "status-passed";
+
+                    }
+                    else if (
+                        interviewAverage >= 5
+                    ) {
+
+                        performance =
+                            "Good";
+
+                        performanceClass =
+                            "";
+
+                    }
+
+
+                    const interviewNumber =
+                        interviewNumbers.get(id);
+
+
+                    const score =
+                        Number(
+                            item.score || 0
+                        );
+
+
+                    tr.innerHTML = `
+
+                        <td>
+                            Interview
+                            ${interviewNumber}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.language || ""
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.topic || ""
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.difficulty || ""
+                            )}
+                        </td>
+
+                        <td
+                            class="activity-question"
+                        >
+                            ${escapeHTML(
+                                item.question || ""
+                            )}
+                        </td>
+
+                        <td>
+                            ${score}/10
+                        </td>
+
+                        <td
+                            class="${performanceClass}"
+                        >
+                            ${performance}
+                        </td>
+
+                    `;
+
+
+                    body.appendChild(
+                        tr
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* ==================================================
+       APTITUDE TABLE
+       ================================================== */
+
+    function buildAptitudeTable(
+        tableData
+    ) {
+
+        const body =
+            document.getElementById(
+                "aptitudeTableBody"
+            );
+
+
+        body.innerHTML =
+            "";
+
+
+        let totalEasy =
+            0;
+
+
+        let totalMedium =
+            0;
+
+
+        let totalHard =
+            0;
+
+
+        Object.keys(
+            tableData
+        )
+        .forEach(
+            function(topic) {
+
+                const row =
+                    tableData[topic];
+
+
+                const easy =
+                    row.Easy || 0;
+
+
+                const medium =
+                    row.Medium || 0;
+
+
+                const hard =
+                    row.Hard || 0;
+
+
+                const total =
+                    easy +
+                    medium +
+                    hard;
+
+
+                totalEasy +=
+                    easy;
+
+
+                totalMedium +=
+                    medium;
+
+
+                totalHard +=
+                    hard;
+
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML = `
+
+                    <td>
+                        ${escapeHTML(topic)}
+                    </td>
+
+                    <td>
+                        ${easy}
+                    </td>
+
+                    <td>
+                        ${medium}
+                    </td>
+
+                    <td>
+                        ${hard}
+                    </td>
+
+                    <td>
+                        ${total}
+                    </td>
+
+                `;
+
+
+                body.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+
+        const totalRow =
+            document.createElement(
+                "tr"
+            );
+
+
+        totalRow.className =
+            "total-row";
+
+
+        const grandTotal =
+            totalEasy +
+            totalMedium +
+            totalHard;
+
+
+        totalRow.innerHTML = `
+
+            <td>
+                Total
+            </td>
+
+            <td>
+                ${totalEasy}
+            </td>
+
+            <td>
+                ${totalMedium}
+            </td>
+
+            <td>
+                ${totalHard}
+            </td>
+
+            <td>
+                ${grandTotal}
+            </td>
+
+        `;
+
+
+        body.appendChild(
+            totalRow
+        );
+
+    }
+
+
+    /* ==================================================
+       CODING TABLE
+       ================================================== */
+
+    function buildCodingTable(
+        tableData
+    ) {
+
+        const body =
+            document.getElementById(
+                "codingTableBody"
+            );
+
+
+        body.innerHTML =
+            "";
+
+
+        let totalEasy =
+            0;
+
+
+        let totalMedium =
+            0;
+
+
+        let totalHard =
+            0;
+
+
+        Object.keys(
+            tableData
+        )
+        .forEach(
+            function(language) {
+
+                const row =
+                    tableData[language];
+
+
+                const easy =
+                    row.Easy || 0;
+
+
+                const medium =
+                    row.Medium || 0;
+
+
+                const hard =
+                    row.Hard || 0;
+
+
+                const total =
+                    easy +
+                    medium +
+                    hard;
+
+
+                totalEasy +=
+                    easy;
+
+
+                totalMedium +=
+                    medium;
+
+
+                totalHard +=
+                    hard;
+
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML = `
+
+                    <td>
+                        ${escapeHTML(language)}
+                    </td>
+
+                    <td>
+                        ${easy}
+                    </td>
+
+                    <td>
+                        ${medium}
+                    </td>
+
+                    <td>
+                        ${hard}
+                    </td>
+
+                    <td>
+                        ${total}
+                    </td>
+
+                `;
+
+
+                body.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+
+        const totalRow =
+            document.createElement(
+                "tr"
+            );
+
+
+        totalRow.className =
+            "total-row";
+
+
+        const grandTotal =
+            totalEasy +
+            totalMedium +
+            totalHard;
+
+
+        totalRow.innerHTML = `
+
+            <td>
+                Total
+            </td>
+
+            <td>
+                ${totalEasy}
+            </td>
+
+            <td>
+                ${totalMedium}
+            </td>
+
+            <td>
+                ${totalHard}
+            </td>
+
+            <td>
+                ${grandTotal}
+            </td>
+
+        `;
+
+
+        body.appendChild(
+            totalRow
+        );
+
+    }
+
+
+    /* ==================================================
+       RECENT ACTIVITY
+       ================================================== */
+
+    function buildRecentActivity(
+        activities
+    ) {
+
+        const body =
+            document.getElementById(
+                "recentActivityBody"
+            );
+
+
+        body.innerHTML =
+            "";
+
+
+        if (
+            !activities ||
+            activities.length === 0
+        ) {
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                            color:#64748b;
+                        "
+                    >
+                        No activity yet.
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        activities
+            .slice(0, 20)
+            .forEach(
+                function(item) {
+
+                    const tr =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    let statusClass =
+                        "";
+
+
+                    const status =
+                        String(
+                            item.status || ""
+                        ).toUpperCase();
+
+
+                    if (
+                        status === "CORRECT"
+                    ) {
+
+                        statusClass =
+                            "status-correct";
+
+                    }
+                    else if (
+                        status === "WRONG"
+                    ) {
+
+                        statusClass =
+                            "status-wrong";
+
+                    }
+                    else if (
+                        status === "PASSED"
+                    ) {
+
+                        statusClass =
+                            "status-passed";
+
+                    }
+                    else if (
+                        status === "FAILED"
+                    ) {
+
+                        statusClass =
+                            "status-failed";
+
+                    }
+
+
+                    tr.innerHTML = `
+
+                        <td>
+                            ${escapeHTML(
+                                item.type
+                            )}
+                        </td>
+
+                        <td
+                            class="activity-question"
+                        >
+                            ${escapeHTML(
+                                item.question
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.topic
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.difficulty
+                            )}
+                        </td>
+
+                        <td
+                            class="${statusClass}"
+                        >
+                            ${
+                                status === "CORRECT"
+                                    ? "✅ Correct"
+                                    : status === "WRONG"
+                                        ? "❌ Wrong"
+                                        : status === "PASSED"
+                                            ? "✅ Passed"
+                                            : status === "FAILED"
+                                                ? "❌ Failed"
+                                                : escapeHTML(item.status)
+                            }
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.dateTime
+                            )}
+                        </td>
+
+                    `;
+
+
+                    body.appendChild(
+                        tr
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* ==================================================
+       ESCAPE HTML
+       ================================================== */
+
+    function escapeHTML(
+        value
+    ) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* ==================================================
+       START
+       ================================================== */
+
+    loadProgress();
+
+</script>
+
+
+</body>
+
+</html>

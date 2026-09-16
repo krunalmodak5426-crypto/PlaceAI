@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PlaceAI - Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f8fc;
+            color: #14213d;
+        }
+
+        .container {
+            width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 14px;
+            border: 1px solid #e1e5eb;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2864e6;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccd3df;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2864e6;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #2864e6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1f54c7;
+        }
+
+        button:disabled {
+            background: #93aee8;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        .signup {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .signup a {
+            color: #2864e6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        .home {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .home:hover {
+            color: #2864e6;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        PlaceAI
+    </h1>
+
+
+    <p class="subtitle">
+        Login to continue your placement preparation
+    </p>
+
+
+
+    <form id="loginForm">
+
+
+        <label for="email">
+            Email
+        </label>
+
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+        >
+
+
+
+        <label for="password">
+            Password
+        </label>
+
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+        >
+
+
+
+        <button
+            type="submit"
+            id="loginBtn"
+        >
+            Login
+        </button>
+
+
+    </form>
+
+
+
+    <div id="message"></div>
+
+
+
+    <div class="signup">
+
+        Don't have an account?
+
+        <a href="/signup.html">
+            Sign Up
+        </a>
+
+    </div>
+
+
+
+    <a
+        href="/index.html"
+        class="home"
+    >
+        ← Back to Home
+    </a>
+
+
+</div>
+
+
+
+<script>
+
+
+const form =
+    document.getElementById(
+        "loginForm"
+    );
+
+
+const button =
+    document.getElementById(
+        "loginBtn"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+
+        message.innerText =
+            "Logging in...";
+
+
+        message.style.color =
+            "#2864e6";
+
+
+        button.disabled =
+            true;
+
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "/api/users/login",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                email:
+                                    email,
+
+                                password:
+                                    password
+
+                            })
+
+                    }
+                );
+
+
+
+            const text =
+                await response.text();
+
+
+
+            console.log(
+                "LOGIN STATUS:",
+                response.status
+            );
+
+
+            console.log(
+                "LOGIN RAW RESPONSE:",
+                text
+            );
+
+
+
+            if (!response.ok) {
+
+                message.innerText =
+                    "❌ Invalid email or password";
+
+                message.style.color =
+                    "red";
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               PARSE RESPONSE
+            ========================= */
+
+            let data;
+
+
+            try {
+
+                data =
+                    JSON.parse(text);
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "INVALID LOGIN JSON:",
+                    error
+                );
+
+
+                message.innerText =
+                    "❌ Invalid response from server.";
+
+                message.style.color =
+                    "red";
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+
+            console.log(
+                "LOGIN DATA:",
+                data
+            );
+
+
+
+            /* =========================
+               GET TOKEN
+            ========================= */
+
+            const token =
+                data.token;
+
+
+
+            if (
+                !token ||
+                token === "undefined" ||
+                token === "null"
+            ) {
+
+                console.error(
+                    "TOKEN MISSING:",
+                    data
+                );
+
+
+                message.innerText =
+                    "❌ Login successful but JWT token was not received.";
+
+                message.style.color =
+                    "red";
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               GET USER DATA
+            ========================= */
+
+            let user;
+
+
+
+            /*
+             * FORMAT 1:
+             *
+             * {
+             *   token: "...",
+             *   user: {
+             *      id: 1,
+             *      fullName: "...",
+             *      email: "...",
+             *      role: "..."
+             *   }
+             * }
+             */
+
+            if (
+                data.user
+            ) {
+
+                user =
+                    data.user;
+
+            }
+
+
+
+            /*
+             * FORMAT 2:
+             *
+             * {
+             *   token: "...",
+             *   fullName: "...",
+             *   email: "...",
+             *   role: "..."
+             * }
+             */
+
+            else if (
+                data.email
+            ) {
+
+                user = {
+
+                    id:
+                        data.id || null,
+
+                    fullName:
+                        data.fullName || "User",
+
+                    email:
+                        data.email,
+
+                    role:
+                        data.role || "USER"
+
+                };
+
+            }
+
+
+
+            /*
+             * FORMAT 3:
+             *
+             * If backend sends message
+             * plus user information
+             */
+
+            else if (
+                data.message &&
+                email
+            ) {
+
+                user = {
+
+                    fullName:
+                        data.fullName || "User",
+
+                    email:
+                        data.email || email,
+
+                    role:
+                        data.role || "USER"
+
+                };
+
+            }
+
+
+
+            /* =========================
+               USER DATA CHECK
+            ========================= */
+
+            if (
+                !user ||
+                !user.email
+            ) {
+
+                console.error(
+                    "USER DATA MISSING:",
+                    data
+                );
+
+
+                message.innerText =
+                    "❌ Login successful but user data was not received.";
+
+                message.style.color =
+                    "red";
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               SAVE JWT
+            ========================= */
+
+            localStorage.setItem(
+                "token",
+                token
+            );
+
+
+
+            /* =========================
+               SAVE USER
+            ========================= */
+
+            localStorage.setItem(
+                "placeaiUser",
+                JSON.stringify(
+                    user
+                )
+            );
+
+
+
+            /* =========================
+               SAVE LOGIN STATUS
+            ========================= */
+
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
+
+
+
+            /* =========================
+               VERIFY STORAGE
+            ========================= */
+
+            console.log(
+                "TOKEN SAVED:",
+                localStorage.getItem(
+                    "token"
+                )
+            );
+
+
+            console.log(
+                "USER SAVED:",
+                localStorage.getItem(
+                    "placeaiUser"
+                )
+            );
+
+
+            console.log(
+                "LOGIN STATUS:",
+                localStorage.getItem(
+                    "isLoggedIn"
+                )
+            );
+
+
+
+            /* =========================
+               SUCCESS
+            ========================= */
+
+            message.innerText =
+                "✅ Login successful!";
+
+
+            message.style.color =
+                "green";
+
+
+
+            /* =========================
+               GO HOME
+            ========================= */
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "/index.html";
+
+                },
+                500
+            );
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            message.innerText =
+                "❌ Cannot connect to server";
+
+
+            message.style.color =
+                "red";
+
+
+            button.disabled =
+                false;
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

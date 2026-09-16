@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PlaceAI | Coding Rounds</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f9fc;
+            color: #172033;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .back {
+            color: #374151;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 29px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        /* ================= FILTERS ================= */
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        select {
+            padding: 10px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+            color: #172033;
+            font-size: 14px;
+        }
+
+        /* ================= PROBLEM ================= */
+
+        .problem {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        pre {
+            background: #111827;
+            color: #f9fafb;
+            padding: 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        /* ================= CODE ================= */
+
+        textarea {
+            width: 100%;
+            min-height: 260px;
+
+            padding: 15px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-family: monospace;
+            font-size: 14px;
+
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        /* ================= SUBMIT ================= */
+
+        .submit {
+            margin-top: 15px;
+
+            padding: 11px 22px;
+
+            border: none;
+            border-radius: 7px;
+
+            background: #2563eb;
+            color: white;
+
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .submit:hover {
+            background: #1d4ed8;
+        }
+
+        .submit:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* ================= RESULT ================= */
+
+        #result {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+
+            border-radius: 8px;
+
+            display: none;
+        }
+
+        /* ================= VIEW SOLUTION ================= */
+
+        .solution-btn {
+            margin-top: 15px;
+
+            padding: 11px 22px;
+
+            border: 1px solid #2563eb;
+            border-radius: 7px;
+
+            background: white;
+            color: #2563eb;
+
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .solution-btn:hover {
+            background: #eff6ff;
+        }
+
+        .solution-box {
+            margin-top: 15px;
+
+            padding: 20px;
+
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+        }
+
+        .solution-box h3 {
+            margin-bottom: 12px;
+            color: #172033;
+        }
+
+        .solution-box pre {
+            margin-bottom: 0;
+
+            background: #111827;
+            color: #f9fafb;
+
+            padding: 18px;
+
+            border-radius: 8px;
+
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        /* ================= ERROR ================= */
+
+        #error {
+            display: none;
+
+            margin-bottom: 20px;
+            padding: 14px;
+
+            background: #fef2f2;
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+        }
+
+        /* ================= LOADING ================= */
+
+        #loading {
+            padding: 40px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* ================= NEXT ================= */
+
+        .next-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .next-btn {
+            padding: 11px 22px;
+
+            border: 1px solid #2563eb;
+            border-radius: 7px;
+
+            background: white;
+            color: #2563eb;
+
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            background: #eff6ff;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:600px) {
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .problem {
+                padding: 20px;
+            }
+
+            .next-row {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= LOGIN CHECK ================= -->
+
+<script>
+
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn");
+
+    const placeaiUser =
+        localStorage.getItem("placeaiUser");
+
+    if (
+        isLoggedIn !== "true" ||
+        !placeaiUser
+    ) {
+
+        window.location.href = "/login.html";
+
+    }
+
+</script>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        PlaceAI
+    </div>
+
+    <a href="/dashboard.html"
+       class="back">
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+
+    <div class="header">
+
+        <h1>
+            Coding Rounds
+        </h1>
+
+        <p>
+            Practice coding problems commonly asked in technical interviews.
+        </p>
+
+    </div>
+
+
+    <!-- ================= FILTERS ================= -->
+
+    <div class="filters">
+
+        <select id="language">
+
+            <option value="Java">
+                Java
+            </option>
+
+            <option value="Python">
+                Python
+            </option>
+
+            <option value="C++">
+                C++
+            </option>
+
+        </select>
+
+
+        <select id="difficulty">
+
+            <option value="Easy">
+                Easy
+            </option>
+
+            <option value="Medium">
+                Medium
+            </option>
+
+            <option value="Hard">
+                Hard
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- ================= ERROR ================= -->
+
+    <div id="error">
+        Unable to load coding problems from server.
+    </div>
+
+
+    <!-- ================= LOADING ================= -->
+
+    <div id="loading">
+        Loading coding problems...
+    </div>
+
+
+    <!-- ================= PROBLEM ================= -->
+
+    <div class="problem"
+         id="problem"
+         style="display:none;">
+
+
+        <span class="tag"
+              id="problemTag">
+            Coding · Easy
+        </span>
+
+
+        <h2 id="title">
+            Coding Problem
+        </h2>
+
+
+        <p class="description"
+           id="description">
+        </p>
+
+
+        <!-- ================= INPUT ================= -->
+
+        <div class="section-title">
+            Input Format
+        </div>
+
+        <pre id="inputFormat"></pre>
+
+
+        <!-- ================= OUTPUT ================= -->
+
+        <div class="section-title">
+            Output Format
+        </div>
+
+        <pre id="outputFormat"></pre>
+
+
+        <!-- ================= EXAMPLE ================= -->
+
+        <div class="section-title">
+            Example
+        </div>
+
+        <pre id="example"></pre>
+
+
+        <!-- ================= YOUR CODE ================= -->
+
+        <div class="section-title">
+            Your Code
+        </div>
+
+
+        <textarea
+            id="code"
+            placeholder="Write your solution here..."></textarea>
+
+
+        <!-- ================= SUBMIT ================= -->
+
+        <button
+            class="submit"
+            id="submitBtn"
+            onclick="submitCode()">
+
+            Submit Solution
+
+        </button>
+
+
+        <!-- ================= RESULT ================= -->
+
+        <div id="result"></div>
+
+
+        <!-- ================= VIEW SOLUTION ================= -->
+
+        <button
+            class="solution-btn"
+            id="solutionBtn"
+            type="button"
+            onclick="showSolution()">
+
+            💡 View Solution
+
+        </button>
+
+
+        <!-- ================= SOLUTION BOX ================= -->
+
+        <div
+            id="solutionBox"
+            class="solution-box"
+            style="display:none;">
+
+            <h3>
+                💡 Correct Solution
+            </h3>
+
+            <pre id="solutionCode"></pre>
+
+        </div>
+
+
+        <!-- ================= NEXT ================= -->
+
+        <div class="next-row">
+
+            <span id="problemCounter">
+                Problem
+            </span>
+
+
+            <button
+                class="next-btn"
+                onclick="nextProblem()">
+
+                Next Problem →
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+/* ==================================================
+   VARIABLES
+   ================================================== */
+
+let problems = [];
+
+let currentProblemIndex = 0;
+
+
+/* ==================================================
+   ELEMENTS
+   ================================================== */
+
+const language =
+    document.getElementById("language");
+
+const difficulty =
+    document.getElementById("difficulty");
+
+const loading =
+    document.getElementById("loading");
+
+const problem =
+    document.getElementById("problem");
+
+const errorBox =
+    document.getElementById("error");
+
+const title =
+    document.getElementById("title");
+
+const problemTag =
+    document.getElementById("problemTag");
+
+const description =
+    document.getElementById("description");
+
+const inputFormat =
+    document.getElementById("inputFormat");
+
+const outputFormat =
+    document.getElementById("outputFormat");
+
+const example =
+    document.getElementById("example");
+
+const code =
+    document.getElementById("code");
+
+const result =
+    document.getElementById("result");
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const problemCounter =
+    document.getElementById("problemCounter");
+
+const solutionBtn =
+    document.getElementById("solutionBtn");
+
+const solutionBox =
+    document.getElementById("solutionBox");
+
+const solutionCode =
+    document.getElementById("solutionCode");
+
+
+/* ==================================================
+   LOAD CODING PROBLEMS
+   ================================================== */
+
+async function loadProblems() {
+
+    console.log(
+        "========== LOAD PROBLEMS =========="
+    );
+
+
+    loading.style.display =
+        "block";
+
+    loading.innerText =
+        "Loading coding problems...";
+
+
+    problem.style.display =
+        "none";
+
+
+    errorBox.style.display =
+        "none";
+
+
+    try {
+
+        const selectedLanguage =
+            language.value;
+
+        const selectedDifficulty =
+            difficulty.value;
+
+
+        const url =
+            "/api/coding/problems/filter" +
+            "?language=" +
+            encodeURIComponent(
+                selectedLanguage
+            ) +
+            "&difficulty=" +
+            encodeURIComponent(
+                selectedDifficulty
+            );
+
+
+        console.log(
+            "API URL:",
+            url
+        );
+
+
+        const response =
+            await fetch(url);
+
+
+        console.log(
+            "HTTP STATUS:",
+            response.status
+        );
+
+
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "SERVER RESPONSE:",
+            responseText
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status +
+                ": " +
+                (
+                    responseText ||
+                    "Server returned an empty response"
+                )
+            );
+
+        }
+
+
+        if (!responseText.trim()) {
+
+            throw new Error(
+                "Server returned an empty response."
+            );
+
+        }
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    responseText
+                );
+
+        } catch (jsonError) {
+
+            throw new Error(
+                "Invalid JSON received from server:\n" +
+                responseText
+            );
+
+        }
+
+
+        console.log(
+            "PROBLEMS RECEIVED:",
+            data
+        );
+
+
+        problems =
+            data;
+
+
+        currentProblemIndex =
+            0;
+
+
+        loading.style.display =
+            "none";
+
+
+        if (
+            !Array.isArray(problems) ||
+            problems.length === 0
+        ) {
+
+            loading.innerText =
+                "No coding problems found.";
+
+            loading.style.display =
+                "block";
+
+            return;
+        }
+
+
+        problem.style.display =
+            "block";
+
+
+        showProblem();
+
+
+    } catch (err) {
+
+        console.error(
+            "LOAD PROBLEMS ERROR:",
+            err
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        problem.style.display =
+            "none";
+
+
+        errorBox.style.display =
+            "block";
+
+
+        errorBox.innerText =
+            "Unable to load coding problems: " +
+            err.message;
+
+    }
+
+}
+
+
+/* ==================================================
+   SHOW CURRENT PROBLEM
+   ================================================== */
+
+function showProblem() {
+
+    if (
+        problems.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const current =
+        problems[currentProblemIndex];
+
+
+    /* ================= TITLE ================= */
+
+    title.innerText =
+        current.title ||
+        "Coding Problem";
+
+
+    /* ================= TAG ================= */
+
+    problemTag.innerText =
+        (
+            current.language ||
+            "Coding"
+        ) +
+        " · " +
+        (
+            current.difficulty ||
+            "Unknown"
+        );
+
+
+    /* ================= DESCRIPTION ================= */
+
+    description.innerText =
+        current.problemStatement ||
+        "No problem statement available.";
+
+
+    /* ================= INPUT ================= */
+
+    inputFormat.innerText =
+        current.inputFormat ||
+        "Not provided.";
+
+
+    /* ================= OUTPUT ================= */
+
+    outputFormat.innerText =
+        current.outputFormat ||
+        "Not provided.";
+
+
+    /* ================= EXAMPLE ================= */
+
+    example.innerText =
+        "Input:\n" +
+        (
+            current.sampleInput ||
+            "Not provided."
+        ) +
+        "\n\nOutput:\n" +
+        (
+            current.sampleOutput ||
+            "Not provided."
+        );
+
+
+    /* ================= STARTER CODE ================= */
+
+    code.value =
+        current.starterCode ||
+        "";
+
+
+    /* ================= RESET RESULT ================= */
+
+    result.style.display =
+        "none";
+
+    result.innerHTML =
+        "";
+
+    result.style.background =
+        "#eff6ff";
+
+    result.style.borderColor =
+        "#bfdbfe";
+
+
+    /* ================= RESET SOLUTION ================= */
+
+    solutionBox.style.display =
+        "none";
+
+    solutionCode.textContent =
+        "";
+
+    solutionBtn.style.display =
+        "inline-block";
+
+    solutionBtn.innerText =
+        "💡 View Solution";
+
+
+    /* ================= COUNTER ================= */
+
+    problemCounter.innerText =
+        "Problem " +
+        (currentProblemIndex + 1) +
+        " of " +
+        problems.length;
+
+
+    /* ================= SUBMIT ================= */
+
+    submitBtn.disabled =
+        false;
+
+    submitBtn.innerText =
+        "Submit Solution";
+
+}
+
+
+/* ==================================================
+   SAVE CODING ATTEMPT
+   ================================================== */
+
+async function saveCodingAttempt(
+    problemId,
+    status
+) {
+
+    try {
+
+        const userData =
+            localStorage.getItem(
+                "placeaiUser"
+            );
+
+
+        if (!userData) {
+
+            console.error(
+                "USER DATA NOT FOUND"
+            );
+
+            return;
+
+        }
+
+
+        const user =
+            JSON.parse(userData);
+
+
+        if (!user.email) {
+
+            console.error(
+                "USER EMAIL NOT FOUND"
+            );
+
+            return;
+
+        }
+
+
+        const saveResponse =
+            await fetch(
+                "/api/user-attempts",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        email:
+                            user.email,
+
+                        type:
+                            "CODING",
+
+                        itemId:
+                            problemId,
+
+                        status:
+                            status
+
+                    })
+
+                }
+            );
+
+
+        const saveText =
+            await saveResponse.text();
+
+
+        console.log(
+            "CODING ATTEMPT SAVE STATUS:",
+            saveResponse.status
+        );
+
+
+        console.log(
+            "CODING ATTEMPT SAVE RESPONSE:",
+            saveText
+        );
+
+
+        if (!saveResponse.ok) {
+
+            console.error(
+                "CODING ATTEMPT WAS NOT SAVED:",
+                saveText
+            );
+
+        } else {
+
+            console.log(
+                "CODING ATTEMPT SAVED SUCCESSFULLY"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "CODING ATTEMPT SAVE ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   SUBMIT CODE
+   ================================================== */
+
+async function submitCode() {
+
+    if (
+        problems.length === 0
+    ) {
+
+        alert(
+            "No coding problem loaded."
+        );
+
+        return;
+
+    }
+
+
+    const userCode =
+        code.value.trim();
+
+
+    if (userCode === "") {
+
+        alert(
+            "Please write your solution first."
+        );
+
+        return;
+
+    }
+
+
+    const current =
+        problems[currentProblemIndex];
+
+
+    submitBtn.disabled =
+        true;
+
+    submitBtn.innerText =
+        "Running...";
+
+
+    result.style.display =
+        "block";
+
+
+    result.style.background =
+        "#eff6ff";
+
+    result.style.borderColor =
+        "#bfdbfe";
+
+
+    result.innerHTML = `
+        <strong>
+            ⏳ Running your code...
+        </strong>
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/coding/submit",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        problemId:
+                            current.id,
+
+                        language:
+                            language.value,
+
+                        code:
+                            userCode
+
+                    })
+
+                }
+            );
+
+
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "SUBMIT STATUS:",
+            response.status
+        );
+
+
+        console.log(
+            "SUBMIT RESPONSE:",
+            responseText
+        );
+
+
+        if (!responseText.trim()) {
+
+            throw new Error(
+                "Server returned an empty response."
+            );
+
+        }
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    responseText
+                );
+
+        } catch (jsonError) {
+
+            throw new Error(
+                "Server returned invalid JSON:\n\n" +
+                responseText
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Submission failed."
+            );
+
+        }
+
+
+        /* ==================================================
+           PASSED
+           ================================================== */
+
+        if (data.passed) {
+
+            result.style.background =
+                "#f0fdf4";
+
+            result.style.borderColor =
+                "#bbf7d0";
+
+
+            result.innerHTML = `
+
+                <strong style="color:#15803d;">
+                    ✅ ${escapeHTML(data.message || "Sample test case passed.")}
+                </strong>
+
+                <br><br>
+
+                <strong>
+                    Your Output:
+                </strong>
+
+                <pre style="
+                    margin-top:10px;
+                    background:#111827;
+                    color:white;
+                    padding:15px;
+                    border-radius:8px;
+                    white-space:pre-wrap;
+                ">${escapeHTML(data.actualOutput || "No output")}</pre>
+
+            `;
+
+
+            /* ================= SAVE PASSED ================= */
+
+            await saveCodingAttempt(
+                current.id,
+                "PASSED"
+            );
+
+        }
+
+
+        /* ==================================================
+           FAILED
+           ================================================== */
+
+        else {
+
+            result.style.background =
+                "#fef2f2";
+
+            result.style.borderColor =
+                "#fecaca";
+
+
+            result.innerHTML = `
+
+                <strong style="color:#b91c1c;">
+                    ❌ ${escapeHTML(data.message || "Submission failed.")}
+                </strong>
+
+                <br><br>
+
+                <strong>
+                    Your Output:
+                </strong>
+
+                <pre style="
+                    margin-top:10px;
+                    background:#111827;
+                    color:white;
+                    padding:15px;
+                    border-radius:8px;
+                    white-space:pre-wrap;
+                ">${escapeHTML(data.actualOutput || "No output")}</pre>
+
+                <br>
+
+                <strong>
+                    Expected Output:
+                </strong>
+
+                <pre style="
+                    margin-top:10px;
+                    background:#111827;
+                    color:white;
+                    padding:15px;
+                    border-radius:8px;
+                    white-space:pre-wrap;
+                ">${escapeHTML(data.expectedOutput || "Not available")}</pre>
+
+                ${
+                    data.error
+                    ? `
+
+                    <br>
+
+                    <strong>
+                        Error:
+                    </strong>
+
+                    <pre style="
+                        margin-top:10px;
+                        background:#111827;
+                        color:#fca5a5;
+                        padding:15px;
+                        border-radius:8px;
+                        white-space:pre-wrap;
+                    ">${escapeHTML(data.error)}</pre>
+
+                    `
+                    : ""
+                }
+
+            `;
+
+
+            /* ================= SAVE FAILED ================= */
+
+            await saveCodingAttempt(
+                current.id,
+                "FAILED"
+            );
+
+        }
+
+
+    } catch (err) {
+
+        console.error(
+            "SUBMISSION ERROR:",
+            err
+        );
+
+
+        result.style.background =
+            "#fef2f2";
+
+        result.style.borderColor =
+            "#fecaca";
+
+
+        result.innerHTML = `
+
+            <strong style="color:#b91c1c;">
+                ❌ Submission Error
+            </strong>
+
+            <br><br>
+
+            <pre style="
+                background:#111827;
+                color:#fca5a5;
+                padding:15px;
+                border-radius:8px;
+                white-space:pre-wrap;
+            ">${escapeHTML(err.message)}</pre>
+
+        `;
+
+    }
+
+
+    finally {
+
+        submitBtn.disabled =
+            false;
+
+        submitBtn.innerText =
+            "Submit Solution";
+
+    }
+
+}
+
+
+/* ==================================================
+   SAFE HTML
+   ================================================== */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==================================================
+   VIEW / HIDE SOLUTION
+   ================================================== */
+
+function showSolution() {
+
+    if (
+        problems.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const current =
+        problems[currentProblemIndex];
+
+
+    const solution =
+        current.solution ||
+        "Solution not available for this problem.";
+
+
+    solutionCode.textContent =
+        solution;
+
+
+    if (
+        solutionBox.style.display ===
+        "none"
+        ||
+        solutionBox.style.display === ""
+    ) {
+
+        solutionBox.style.display =
+            "block";
+
+        solutionBtn.innerText =
+            "🙈 Hide Solution";
+
+    } else {
+
+        solutionBox.style.display =
+            "none";
+
+        solutionBtn.innerText =
+            "💡 View Solution";
+
+    }
+
+}
+
+
+/* ==================================================
+   NEXT PROBLEM
+   ================================================== */
+
+function nextProblem() {
+
+    if (
+        problems.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    currentProblemIndex++;
+
+
+    if (
+        currentProblemIndex >=
+        problems.length
+    ) {
+
+        currentProblemIndex =
+            0;
+
+    }
+
+
+    showProblem();
+
+}
+
+
+/* ==================================================
+   FILTER CHANGE
+   ================================================== */
+
+language.addEventListener(
+    "change",
+    loadProblems
+);
+
+
+difficulty.addEventListener(
+    "change",
+    loadProblems
+);
+
+
+/* ==================================================
+   START
+   ================================================== */
+
+loadProblems();
+
+</script>
+
+
+</body>
+</html>
