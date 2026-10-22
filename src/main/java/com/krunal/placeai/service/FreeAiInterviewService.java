@@ -20,7 +20,7 @@ public class FreeAiInterviewService {
      * Gemini model.
      */
     private static final String MODEL =
-            "gemini-3.1-flash-lite";
+            "gemini-3.5-flash-lite";
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
